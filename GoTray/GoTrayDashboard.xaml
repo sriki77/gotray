@@ -10,7 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d">
 
-    <Page.Resources>
+    <Page.Resources >
         <CollectionViewSource
             x:Name="itemsViewSource"
             Source="{Binding Items}"/>
@@ -20,7 +20,7 @@
         <!-- Grid Styles -->
         <Style x:Key="GridTitleTextStyle" TargetType="TextBlock" 
                BasedOn="{StaticResource BasicTextStyle}">
-            <Setter Property="FontSize" Value="26.667"/>
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="Margin" Value="12,0,12,2"/>
         </Style>
 
@@ -34,14 +34,15 @@
         </Style>
 
         <DataTemplate x:Key="DefaultGridItemTemplate">
-            <Grid HorizontalAlignment="Left"  Height="250">
-                <Border Background="{StaticResource BlockBackgroundBrush}" />
-                <TextBlock Text="{Binding ProjectName}" 
-                           Style="{StaticResource GridTitleTextStyle}"/>
-                <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal"
-                        Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
-                    <TextBlock Text="Last Build Time" Margin="12,4,0,8" Height="42"/>
-                    <TextBlock Text="{Binding LastBuildTime}" Margin="12,4,12,8" />
+            <Grid HorizontalAlignment="Left"  Height="100" Width="400" Background="{StaticResource BlockBackgroundBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.7*"></RowDefinition>
+                    <RowDefinition Height="0.3*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding ProjectName}" Grid.Row="0" Style="{StaticResource GridTitleTextStyle}"/>
+
+                <StackPanel VerticalAlignment="Bottom" Grid.Row="1" Orientation="Horizontal" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                    <TextBlock Text="Last Build Time" Margin="12,4,0,8" Height="42"/><TextBlock Text="{Binding LastBuildTime}" Margin="12,4,12,8" />
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -54,6 +55,11 @@
         * Row 1 contains the rest of the page layout
     -->
     <Grid Style="{StaticResource LayoutRootStyle}">
+        <Grid.Background>
+            <ImageBrush ImageSource="BackGround.png"/>
+        </Grid.Background>
+        
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
@@ -79,6 +85,7 @@
             AutomationProperties.Name="Items"
             TabIndex="1"
             Grid.Row="1"
+            Background="Red"
             Visibility="Collapsed"
             Margin="0,-10,0,0"
             Padding="10,0,0,60"

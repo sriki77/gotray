@@ -7,11 +7,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="#4A1F89" x:Name="TrayGrid">
         <TextBlock HorizontalAlignment="Left" Margin="84,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="52" Width="109">
         	<Run FontSize="45" Text="Go"/>
         	<LineBreak/>
         	<Run/>
         </TextBlock>
-    </Grid>
+        
 </Page>

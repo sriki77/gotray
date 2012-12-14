@@ -133,6 +133,7 @@
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\widerLogo.png" />
+    <Content Include="BackGround.png" />
     <Content Include="Common\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
