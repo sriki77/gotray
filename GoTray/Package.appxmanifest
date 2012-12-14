@@ -15,9 +15,9 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="GoTray.App">
-      <VisualElements DisplayName="GoTray" Logo="Assets\logo_150.png" SmallLogo="Assets\logo_30.png" Description="Go Dashboard Built Using CCTray Feed From Go." ForegroundText="light" BackgroundColor="#464646" ToastCapable="true">
-        <DefaultTile ShowName="allLogos" WideLogo="Assets\logo_310.png" />
-        <SplashScreen Image="Assets\SplashScreen.png" />
+      <VisualElements DisplayName="GoTray" Logo="Assets\logo.png" SmallLogo="Assets\smallLogo.png" Description="Go Dashboard Built Using CCTray Feed From Go." ForegroundText="light" BackgroundColor="#464646" ToastCapable="true">
+        <DefaultTile ShowName="allLogos" />
+        <SplashScreen Image="Assets\splashScreen.png" />
       </VisualElements>
     </Application>
   </Applications>

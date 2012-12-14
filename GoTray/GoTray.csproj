@@ -129,13 +129,10 @@
   <ItemGroup>
     <Content Include="Assets\LoadFeed.png" />
     <Content Include="Assets\Logo.png" />
-    <Content Include="Assets\logo_150.png" />
-    <Content Include="Assets\logo_30.png" />
-    <Content Include="Assets\logo_310.png" />
-    <Content Include="Assets\oops.png" />
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\widerLogo.png" />
     <Content Include="Common\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
