@@ -100,6 +100,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BooleanToVisibilityConverter.cs" />
+    <Compile Include="GoTrayConfiguration.cs" />
+    <Compile Include="GoTrayConstants.cs" />
     <Compile Include="ToastUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using GoTray.Common;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using GoTrayUtils;
+using Windows.Storage;
+using Windows.UI.ApplicationSettings;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -19,9 +13,86 @@ namespace GoTray
 {
     public sealed partial class GoTraySettings : LayoutAwarePage
     {
+        private string _url = "";
+        private string _username = "";
+        private string _password = "";
+        private readonly GoTrayConfiguration _config;
+
         public GoTraySettings()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            this.Loaded += SettingsLoaded;
+            this.Unloaded += SettingsClosed;
+            _config = GoTrayConfiguration.TrayConfiguration;
+        }
+
+        private void SettingsLoaded(object sender, RoutedEventArgs e)
+        {
+            LoadConfiguration();
+            GoServerUrl = _url;
+            GoServerUserName = _username;
+            GoServerPassword = _password;
+        }
+
+        private void LoadConfiguration()
+        {
+            _url = _config.GoServerUrl;
+            _username = _config.GoServerUserName;
+            _password = _config.GoServerPassword;
+
+        }
+
+        private void SettingsClosed(object sender, object e)
+        {
+            if (ConfigurationChanged())
+            {
+                _config.GoServerUrl = GoServerUrl;
+                _config.GoServerUserName = GoServerUserName;
+                _config.GoServerPassword = GoServerPassword;
+                _config.ValuesChanged();
+            }
+        }
+
+        private bool ConfigurationChanged()
+        {
+            return !_url.Equals(GoServerUrl) ||
+                   !_username.Equals(GoServerUserName) ||
+                   !_password.Equals(GoServerPassword);
+        }
+
+        private string GoServerPassword
+        {
+            get { return (string)DefaultViewModel["GoServerPassword"]; }
+            set { DefaultViewModel["GoServerPassword"] = value; }
+        }
+
+        private string GoServerUserName
+        {
+            get { return (string)DefaultViewModel["GoServerUserName"]; }
+            set { DefaultViewModel["GoServerUserName"] = value; }
+        }
+
+        private string GoServerUrl
+        {
+            get { return (string) DefaultViewModel["GoServerUrl"]; }
+            set { DefaultViewModel["GoServerUrl"]=value; }
+        }
+
+
+        private void SettingsBackClicked(object sender, RoutedEventArgs e)
+        {
+            Popup parent = this.Parent as Popup;
+            if (parent != null)
+            {
+                parent.IsOpen = false;
+            }
+
+            // If the app is not snapped, then the back button shows the Settings pane again.
+            if (ApplicationView.Value
+                != ApplicationViewState.Snapped)
+            {
+                SettingsPane.Show();
+            }
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using GoTrayFeed;
+using GoTrayUtils;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-// The Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234233
 
 namespace GoTray
 {
@@ -23,6 +25,14 @@ namespace GoTray
             ErrorDetails = cause.Message;
             return this;
         }
+
+        internal GoTrayDashboardErrorContext RemoveError()
+        {
+            Error = false;
+            ErrorMessage = "";
+            ErrorDetails = "";
+            return this;
+        }
     }
     /// <summary>
     /// A page that displays a collection of item previews.  In the Split Application this page
@@ -30,9 +40,13 @@ namespace GoTray
     /// </summary>
     public sealed partial class GoTrayDashboard : GoTray.Common.LayoutAwarePage
     {
+        private readonly GoTrayConfiguration _config;
+
         public GoTrayDashboard()
         {
             this.InitializeComponent();
+            _config = GoTrayConfiguration.TrayConfiguration;
+            _config.ConfigChanged += ConfigurationChanged;
         }
 
         /// <summary>
@@ -44,27 +58,89 @@ namespace GoTray
         /// </param>
         /// <param name="pageState">A dictionary of state preserved by this page during an earlier
         /// session.  This will be null the first time a page is visited.</param>
-        protected override async void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
+        protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
+        {
+            LoadPipelines(false);
+        }
+
+        private async Task LoadPipelines(bool reload)
         {
             try
             {
-                DefaultViewModel["ShowProgress"] = true;
-                GoTrayFeedSource feedDataSource = (GoTrayFeedSource)Application.Current.Resources["GoTrayFeedSource"];
+                InitProgress(reload);
+                GoTrayFeedSource feedDataSource = new GoTrayFeedSource(_config.GoServerUrl, _config.GoServerUserName,
+                                                                       _config.GoServerPassword);
                 IEnumerable<GoProject> projects = await feedDataSource.projects;
-                DefaultViewModel["Items"] = projects;
-                DefaultViewModel["ShowProgress"] = false;
+                Projects = projects;
+                ResetProgress();
             }
             catch (Exception ex)
             {
-                DefaultViewModel["ShowProgress"] = false;
+                Projects = Enumerable.Empty<GoProject>();
+                ResetProgress();
                 ShowException(ex);
             }
+        }
+
+        private void ResetProgress()
+        {
+            ShowProgress = false;
+            ShowReloadProgress = false;
+        }
+
+        private void InitProgress(bool reload)
+        {
+            if (reload)
+            {
+                ShowReloadProgress = true;
+            }
+            else
+            {
+                ShowProgress = true;
+            }
+        }
+
+        private void ConfigurationChanged(object sender, EventArgs e)
+        {
+            Projects = Enumerable.Empty<GoProject>();
+            ResetException();
+            LoadPipelines(true);
         }
 
         private void ShowException(Exception ex)
         {
             ErrorGrid.DataContext = new GoTrayDashboardErrorContext()
             .ShowError("Failed To Retieve Pipelines From Go Server", ex);
+        }
+
+        private void ResetException()
+        {
+            ErrorGrid.DataContext = new GoTrayDashboardErrorContext().RemoveError();
+        }
+
+        private bool ShowProgress
+        {
+            set { 
+                DefaultViewModel["ShowProgress"]=value;
+                DefaultViewModel["ReloadProgress"] = false;
+                DefaultViewModel["LoadProgress"] = value;
+            }
+        }
+
+        private bool ShowReloadProgress
+        {
+            set
+            {
+                DefaultViewModel["ShowProgress"] = value;
+                DefaultViewModel["ReloadProgress"] = value;
+                DefaultViewModel["LoadProgress"] = false;
+            }
+        }
+
+        private IEnumerable<GoProject> Projects
+        {
+            set { DefaultViewModel["Items"] = value;
+            }
         }
     }
 }

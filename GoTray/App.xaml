@@ -2,7 +2,6 @@
     x:Class="GoTray.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:goTrayFeed="using:GoTrayFeed"
     xmlns:goTrayUtils="using:GoTrayUtils">
 
     <Application.Resources>
@@ -11,8 +10,8 @@
                 <ResourceDictionary Source="Common/StandardStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <x:String x:Key="AppName">Go</x:String>
-            <goTrayFeed:GoTrayFeedSource x:Key="GoTrayFeedSource"/>
-            <goTrayUtils:BooleanToVisibilityConverter x:Key="BoolToVisiConv"/>
+            <goTrayUtils:BooleanToVisibilityConverter x:Key="BoolToVisiConv" TrueValue="Visible" FalseValue="Collapsed"/>
+            <goTrayUtils:BooleanToVisibilityConverter x:Key="InvBoolToVisiConv" TrueValue="Collapsed" FalseValue="Visible"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

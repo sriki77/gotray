@@ -9,7 +9,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d"
     d:DesignHeight="768"
-    d:DesignWidth="646">
+    d:DesignWidth="646"
+    >
 
     <UserControl.Resources>
         <Style x:Key="SettingsBackButtonStyle" TargetType="Button">
@@ -126,63 +127,29 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Horizontal" Grid.Column="0" Margin="40, 32, 17, 13">
-                    <Button Margin="5,3,0,0"  Style="{StaticResource SettingsBackButtonStyle}"/>
+                    <Button Margin="5,3,0,0"  Style="{StaticResource SettingsBackButtonStyle}" Click="SettingsBackClicked"/>
                     <TextBlock Margin="10,0,0,0" FontFamily="Segoe UI" FontWeight="SemiLight" FontSize="24.6667" Text="Defaults" Foreground="White"/>
-                    <Image Source="Assets/logo_30.png" Margin="400,0,6,0"/>
+                    <Image Source="Assets/SmallLogo.png" Margin="400,0,6,0"/>
                 </StackPanel>
             </Grid>
 
             <!-- Settings Panel Content -->
             <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-                <Grid Margin="40,33,40,39" VerticalAlignment="Top" Grid.RowSpan="3">
-
+                <Grid Margin="40,33,40,39" VerticalAlignment="Top" Grid.RowSpan="3" >
                     <StackPanel x:Name="FlyoutContent">
-                        <TextBlock FontWeight="Bold" Text="Toggle Switch" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                        <TextBlock Text="Use toggle switches to let users set Boolean values." TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                        <ToggleSwitch Margin="-6,25, 0, 0" Header = "Download updates automatically" HorizontalAlignment="Left" HorizontalContentAlignment="Left"/>
-                        <ToggleSwitch Margin="-6, 0, 0, 0" Header = "Install updates automatically" HorizontalAlignment="Stretch"/>
-
+                        <TextBlock FontWeight="Bold" Text="Go Server Configuration" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                        <TextBlock Text="Go Server to get the dashboard information." TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
                         <StackPanel Margin="0, 39, 0, 0">
-                            <TextBlock FontWeight="Bold" Text="Push button" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <TextBlock Text="With a push button, users initiate an immediate action." TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <TextBlock Margin="0, 25, 0, 0" Text="Button label" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <Button Margin="-3, 0, 0, 0" Content="Clear"/>
+                            <TextBlock Margin="0,25, 0, 0" FontWeight="Bold" Text="Go Server's CCTray Feed URL" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                            <TextBox HorizontalAlignment="Left" Width="300" InputScope="Url" Text="{Binding GoServerUrl, Mode=TwoWay}" />
                         </StackPanel>
-
                         <StackPanel Margin="0, 39, 0, 0">
-                            <TextBlock FontWeight="Bold" Text="Select control" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <TextBlock Text="Use the select control to allow users to select one item from a set of text-only items." TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <TextBlock Margin="0,25, 0, 0" Text="State:" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <ComboBox Margin="0,7, 0, 0" SelectedIndex="0" HorizontalAlignment="Left">
-                                <ComboBoxItem Content="Washington"/>
-                                <ComboBoxItem Content="Oregon"/>
-                                <ComboBoxItem Content="California"/>
-                            </ComboBox>
-                        </StackPanel>
-
-                        <StackPanel Margin="0, 39, 0, 0">
-                            <TextBlock FontWeight="Bold" Text="Hyperlink" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <TextBlock Text="Use a hyperlink when the associated action will take the user out of this flyout." TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <HyperlinkButton Padding="-5,0,0,0" Margin="0, 25, 0, 0" Content="View privacy statement" Tag="http://privacy.microsoft.com" HorizontalAlignment="Left"/>
-                        </StackPanel>
-
-                        <StackPanel Margin="0, 39, 0, 0">
-                            <TextBlock FontWeight="Bold" Text="Text input box" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <TextBlock Text="Use a text input box to allow users to enter text. Set the type of the text input box according to the type of text you are capturing from the user (e.g. email or password)." TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <TextBlock Margin="0,25, 0, 0" Text="Email account" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <StackPanel Margin="0, 7, 0, 0" Orientation="Horizontal">
-                                <TextBox HorizontalAlignment="Left" Width="300"/>
-                                <Button Margin="20,0, 0, 0" Content="Add"/>
-                            </StackPanel>
-                        </StackPanel>
-
-                        <StackPanel Margin="0, 39, 0, 0">
-                            <TextBlock FontWeight="Bold" Text="Radio button group" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <TextBlock Text="Lets users choose one item from a small set of mutually exclusive, related options." TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <TextBlock Margin="0,25, 0, 0" Text="Video quality" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
-                            <RadioButton Margin="0, 7, 0, 0" Content="High"/>
-                            <RadioButton Margin="0, 17, 0, 0" Content="Medium"/>
-                            <RadioButton Margin="0, 17, 0, 0" Content="Low"/>
+                            <TextBlock FontWeight="Bold" Text="Access Credentials" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                            <TextBlock Text="Credentials to be used for connecting to Go Server" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                            <TextBlock Margin="0,25, 0, 0" Text="Username" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                            <TextBox HorizontalAlignment="Left" Width="207" Text="{Binding GoServerUserName, Mode=TwoWay}"/>
+                            <TextBlock Margin="0,25, 0, 0" Text="Password" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                            <PasswordBox HorizontalAlignment="Left" Width="207" IsPasswordRevealButtonEnabled="True" Password="{Binding GoServerPassword,Mode=TwoWay}" />
                         </StackPanel>
                     </StackPanel>
                 </Grid>

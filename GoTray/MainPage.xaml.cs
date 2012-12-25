@@ -13,7 +13,6 @@ namespace GoTray
 {
     public sealed partial class MainPage : Page
     {
-        int i = 0;
 
         public MainPage()
         {

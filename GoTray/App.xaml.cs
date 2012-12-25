@@ -94,9 +94,8 @@ namespace GoTray
 
         private void App_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
         {
-            SettingsCommand command = new SettingsCommand("about", "About This App", OnSettingCommand);
-
-
+            SettingsCommand command = new SettingsCommand("settings", "Configuration", OnSettingCommand);
+            
             args.Request.ApplicationCommands.Add(command);
         }
 
