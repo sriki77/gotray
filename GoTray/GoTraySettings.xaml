@@ -112,7 +112,7 @@
     </UserControl.Resources>
 
     <Border BorderBrush="#00b2f0" BorderThickness="1,0,0,0">
-        <Grid Background="Black" VerticalAlignment="Stretch">
+        <Grid Background="Black" VerticalAlignment="Stretch" Opacity="25">
 
             <!-- Root grid definition -->
             <Grid.RowDefinitions>
@@ -121,7 +121,7 @@
             </Grid.RowDefinitions>
 
             <!-- Header area for panel -->
-            <Grid Background="#0000" Grid.Row="0">
+            <Grid Background="#0000" Grid.Row="0" Opacity="25" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>

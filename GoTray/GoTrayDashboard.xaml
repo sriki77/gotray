@@ -101,7 +101,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
-            <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
+            <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource DashboardHeading}" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
 
         <Grid x:Name="ErrorGrid" DataContext="{StaticResource DashErrorContext}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Visibility="{Binding Error,Converter={StaticResource BoolToVisiConv}}">
@@ -123,11 +123,11 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock Text="ReLoading Pipelines..."  Grid.Row="0"
-                   Style="{StaticResource GridTitleTextStyle}" FontFamily="Segoe UI" FontWeight="SemiLight"
+                   Style="{StaticResource SubheaderTextStyle}"
                        Visibility="{Binding ReloadProgress,Converter={StaticResource BoolToVisiConv}}">
             </TextBlock>
             <TextBlock Text="Loading Pipelines..."  Grid.Row="0"
-                   Style="{StaticResource GridTitleTextStyle}" FontFamily="Segoe UI" FontWeight="SemiLight"
+                   Style="{StaticResource SubheaderTextStyle}" 
                        Visibility="{Binding LoadProgress,Converter={StaticResource BoolToVisiConv}}">
             </TextBlock>
             <ProgressRing IsActive="True" Grid.Row="1"  Width="50" Height="50" />
