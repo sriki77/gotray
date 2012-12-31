@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Windows.UI;
 
 namespace GoTrayFeed
 {
@@ -68,6 +69,8 @@ namespace GoTrayFeed
             }
             return projects;
         }
+
+       
 
         private bool IsJob(GoProject project)
         {

@@ -14,6 +14,33 @@ namespace GoTrayFeed
             set { _pipelineName = value.Split(':')[0]; }
         }
 
+        private string GetStatus(bool isBuilding, string status)
+        {
+            string color = string.Empty;
+            if (isBuilding) status = "Building";
+            switch (status)
+            {
+                case "Building":
+                    color = "#8b7703";
+                    break;
+                case "Success":
+                    color = "#035b06";
+                    break;
+                case "Failure":
+                    color = "#5d0104";
+                    break;
+            }
+            return color;
+        }
+
+        public string GetColor {
+            get
+            {
+               return GetStatus(Stages[Stages.Count - 1].Activity == "Building", Stages[Stages.Count - 1].LastBuildStatus);
+            }
+            set { _pipelineName = value; }
+        }
+
         public string LastBuildTime
         {
             get { return Stages[Stages.Count-1].LastBuildTime; }

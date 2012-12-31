@@ -25,7 +25,7 @@
         </Style>
 
         <!-- light blue -->
-        <SolidColorBrush x:Key="BlockBackgroundBrush" Color="#FF557EB9"/>
+        <SolidColorBrush x:Key="BlockBackgroundBrush" Color="#5d0104"/>
 
         <Style x:Key="GridDescriptionTextStyle" TargetType="TextBlock" 
                BasedOn="{StaticResource BasicTextStyle}">
@@ -34,12 +34,12 @@
         </Style>
 
         <DataTemplate x:Key="DefaultGridItemTemplate">
-            <Grid HorizontalAlignment="Left"  Height="100" Width="400" Background="{StaticResource BlockBackgroundBrush}">
+            <Grid HorizontalAlignment="Left"  Height="110" Width="380" Background="{Binding GetColor}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.7*"></RowDefinition>
                     <RowDefinition Height="0.3*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{Binding PipelineName}" Grid.Row="0" Style="{StaticResource GridTitleTextStyle}"/>
+                <TextBlock Text="{Binding PipelineName}" FontSize="40" Grid.Row="0" Style="{StaticResource GridTitleTextStyle}" FontWeight="Light"/>
 
                 <StackPanel VerticalAlignment="Bottom" Grid.Row="1" Orientation="Horizontal" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
                     <TextBlock Text="Last Build Time" Margin="12,4,0,8" Height="42"/><TextBlock Text="{Binding LastBuildTime}" Margin="12,4,12,8" />
