@@ -14,6 +14,26 @@
             <goTrayUtils:BooleanToVisibilityConverter x:Key="BoolToVisiConv" TrueValue="Visible" FalseValue="Collapsed"/>
             <goTrayUtils:BooleanToVisibilityConverter x:Key="InvBoolToVisiConv" TrueValue="Collapsed" FalseValue="Visible"/>
             <helpers:ProjectDashColorConverter x:Key="ProjectDashColorConv"/>
+            
+            <Style TargetType="TextBlock">
+                <Setter Property="FontWeight" Value="Light"></Setter>
+            </Style>
+
+            <Style TargetType="TextBlock" x:Name="StageName" >
+                <Setter Property="FontSize" Value="50"></Setter>
+                <Setter Property="FontWeight" Value="Light"></Setter>
+                <Setter Property="Foreground" Value="#844eb4"></Setter>
+
+            </Style>
+
+            <Style TargetType="TextBlock" x:Name="RunningStageName" >
+                <Setter Property="FontSize" Value="50"></Setter>
+                <Setter Property="FontWeight" Value="Light"></Setter>
+                <Setter Property="Foreground" Value="White"></Setter>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
+    
+    
 </Application>
