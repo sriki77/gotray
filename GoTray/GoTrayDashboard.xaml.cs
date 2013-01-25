@@ -60,7 +60,9 @@ namespace GoTray
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
+#pragma warning disable 4014
             LoadPipelines(false);
+#pragma warning restore 4014
         }
 
         private async Task LoadPipelines(bool reload)
@@ -104,7 +106,9 @@ namespace GoTray
         {
             Projects = Enumerable.Empty<GoProject>();
             ResetException();
+#pragma warning disable 4014
             LoadPipelines(true);
+#pragma warning restore 4014
         }
 
         private void ShowException(Exception ex)

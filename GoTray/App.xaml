@@ -2,7 +2,7 @@
     x:Class="GoTray.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:goTrayUtils="using:GoTrayUtils">
+    xmlns:goTrayUtils="using:GoTrayUtils" xmlns:helpers="using:GoTray.Helpers">
 
     <Application.Resources>
         <ResourceDictionary>
@@ -13,6 +13,7 @@
             <x:String x:Key="DashboardHeading">Go Pipelines</x:String>
             <goTrayUtils:BooleanToVisibilityConverter x:Key="BoolToVisiConv" TrueValue="Visible" FalseValue="Collapsed"/>
             <goTrayUtils:BooleanToVisibilityConverter x:Key="InvBoolToVisiConv" TrueValue="Collapsed" FalseValue="Visible"/>
+            <helpers:ProjectDashColorConverter x:Key="ProjectDashColorConv"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

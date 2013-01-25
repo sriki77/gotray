@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GoTrayFeed
 {
@@ -7,6 +8,11 @@ namespace GoTrayFeed
         //<Project name="sadf :: defaultStage" activity="Building" lastBuildStatus="Success" lastBuildLabel="1" lastBuildTime="2012-11-15T14:58:58" webUrl="http://localhost:8153/go/pipelines/sadf/1/defaultStage/1"/>
         public List<Stage> Stages= new List<Stage>();
         private string _pipelineName;
+        public enum ProjectStatus
+        {
+            Building,Success,Failure
+
+        }
 
         public string PipelineName
         {
@@ -14,31 +20,22 @@ namespace GoTrayFeed
             set { _pipelineName = value.Split(':')[0]; }
         }
 
-        private string GetStatus(bool isBuilding, string status)
+        public ProjectStatus Status
         {
-            string color = string.Empty;
-            if (isBuilding) status = "Building";
-            switch (status)
-            {
-                case "Building":
-                    color = "#8b7703";
-                    break;
-                case "Success":
-                    color = "#035b06";
-                    break;
-                case "Failure":
-                    color = "#5d0104";
-                    break;
-            }
-            return color;
+            get { return DetermineProjectStatus(); }
+            private set { throw new System.NotImplementedException(); }
         }
 
-        public string GetColor {
-            get
+        private ProjectStatus DetermineProjectStatus()
+        {
+            Stage buildingStage = Stages.Find(stage => "Building".Equals(stage.Activity));
+            if (buildingStage != null)
             {
-               return GetStatus(Stages[Stages.Count - 1].Activity == "Building", Stages[Stages.Count - 1].LastBuildStatus);
+                return ProjectStatus.Building;
             }
-            set { _pipelineName = value; }
+
+            return (ProjectStatus) Enum.Parse(typeof (ProjectStatus), Stages[Stages.Count - 1].LastBuildStatus,true);
+
         }
 
         public string LastBuildTime

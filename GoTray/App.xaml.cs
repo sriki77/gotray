@@ -152,8 +152,10 @@ namespace GoTray
             IReadOnlyList<ConnectionProfile> con = NetworkInformation.GetConnectionProfiles();
             if (con == null)
             {
+#pragma warning disable 4014
                 new MessageDialog("An internet connection is needed to contact Go Server. " +
                                   "Please check your connection and restart the app.").ShowAsync();
+#pragma warning restore 4014
             }
         }
 

@@ -115,6 +115,7 @@
     <Compile Include="GoTraySettings.xaml.cs">
       <DependentUpon>GoTraySettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ProjectDashColorConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +162,7 @@
       <Name>GoTrayUtils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>
