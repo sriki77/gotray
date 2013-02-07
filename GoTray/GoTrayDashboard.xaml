@@ -34,7 +34,7 @@
         </Style>
 
         <DataTemplate x:Key="DefaultGridItemTemplate">
-            <Grid HorizontalAlignment="Left"  Height="110" Width="380" Background="{Binding Status, Converter={StaticResource ProjectDashColorConv}}">
+            <Grid HorizontalAlignment="Left"  Height="110" Width="380" Background="{Binding Status, Converter={StaticResource ProjectDashColorConv}}" Tapped="PipelineTapped">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.7*"></RowDefinition>
                     <RowDefinition Height="0.3*"></RowDefinition>

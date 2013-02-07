@@ -6,6 +6,8 @@ using GoTrayFeed;
 using GoTrayUtils;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Navigation;
 
 
 namespace GoTray
@@ -45,6 +47,7 @@ namespace GoTray
         public GoTrayDashboard()
         {
             this.InitializeComponent();
+            this.NavigationCacheMode=NavigationCacheMode.Enabled;
             _config = GoTrayConfiguration.TrayConfiguration;
             _config.ConfigChanged += ConfigurationChanged;
         }
@@ -145,6 +148,12 @@ namespace GoTray
         {
             set { DefaultViewModel["Items"] = value;
             }
+        }
+
+        private void PipelineTapped(object sender, TappedRoutedEventArgs e)
+        {
+            GoProject project = (GoProject) ((FrameworkElement) sender).DataContext;
+            Frame.Navigate(typeof (PipelineDetails), project);
         }
     }
 }
