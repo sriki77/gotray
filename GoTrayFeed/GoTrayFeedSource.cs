@@ -39,6 +39,7 @@ namespace GoTrayFeed
                                                          Stages= new []{
                                                              new Stage
                                                                  {
+                                                                     Name=lv1.Attribute("name").Value,
                                                                      Activity = lv1.Attribute("activity").Value,
                                                                      LastBuildLabel = lv1.Attribute("lastBuildLabel").Value,
                                                                      LastBuildStatus = lv1.Attribute("lastBuildStatus").Value,
@@ -74,8 +75,8 @@ namespace GoTrayFeed
 
         private bool IsJob(GoProject project)
         {
-            return project.PipelineName.IndexOf("::", System.StringComparison.Ordinal) != 
-                project.PipelineName.LastIndexOf("::", System.StringComparison.Ordinal);
+            return project.PipelineFullName.IndexOf("::", System.StringComparison.Ordinal) !=
+                project.PipelineFullName.LastIndexOf("::", System.StringComparison.Ordinal);
         }
 
         private async Task<string> RetrieveCcTrayResponseAsync(string serverUrl, ICredentials credential)

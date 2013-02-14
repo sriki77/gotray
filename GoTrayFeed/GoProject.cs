@@ -17,8 +17,12 @@ namespace GoTrayFeed
         public string PipelineName
         {
             get { return _pipelineName; }
-            set { _pipelineName = value.Split(':')[0]; }
+            set
+            {
+                PipelineFullName=value; _pipelineName = value.Split(':')[0]; }
         }
+
+        internal string PipelineFullName { get; private set; }
 
         public ProjectStatus Status
         {
@@ -51,11 +55,18 @@ namespace GoTrayFeed
 
     public sealed class Stage
     {
-        public string Name { get; set; }
+        private string _stageName;
+        public string Name {
+            get { return _stageName; }
+            set { _stageName = value.Split(':')[2].Trim(); }
+        }
         public string Activity { get; set; }
         public string LastBuildStatus { get; set; }
         public string LastBuildLabel { get; set; }
         public string LastBuildTime { get; set; }
         public string WebUrl { get; set; }
+        public bool Active {
+            get { return "Building".Equals(Activity); }
+        }
     }
 }

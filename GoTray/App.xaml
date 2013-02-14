@@ -19,14 +19,14 @@
                 <Setter Property="FontWeight" Value="Light"></Setter>
             </Style>
 
-            <Style TargetType="TextBlock" x:Name="StageName" >
+            <Style TargetType="TextBlock" x:Name="InActiveStageName" >
                 <Setter Property="FontSize" Value="50"></Setter>
                 <Setter Property="FontWeight" Value="Light"></Setter>
                 <Setter Property="Foreground" Value="#844eb4"></Setter>
 
             </Style>
 
-            <Style TargetType="TextBlock" x:Name="RunningStageName" >
+            <Style TargetType="TextBlock" x:Name="ActiveStageName" >
                 <Setter Property="FontSize" Value="50"></Setter>
                 <Setter Property="FontWeight" Value="Light"></Setter>
                 <Setter Property="Foreground" Value="White"></Setter>
