@@ -31,7 +31,6 @@
                 <Setter Property="FontWeight" Value="Light"></Setter>
                 <Setter Property="Foreground" Value="White"></Setter>
             </Style>
-
         </ResourceDictionary>
     </Application.Resources>
     

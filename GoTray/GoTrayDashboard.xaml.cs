@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GoTray.Common;
 using GoTrayFeed;
 using GoTrayUtils;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
-
 
 namespace GoTray
 {
@@ -36,31 +37,61 @@ namespace GoTray
             return this;
         }
     }
+
     /// <summary>
-    /// A page that displays a collection of item previews.  In the Split Application this page
-    /// is used to display and select one of the available groups.
+    ///     A page that displays a collection of item previews.  In the Split Application this page
+    ///     is used to display and select one of the available groups.
     /// </summary>
-    public sealed partial class GoTrayDashboard : GoTray.Common.LayoutAwarePage
+    public sealed partial class GoTrayDashboard : LayoutAwarePage
     {
         private readonly GoTrayConfiguration _config;
 
         public GoTrayDashboard()
         {
-            this.InitializeComponent();
-            this.NavigationCacheMode=NavigationCacheMode.Enabled;
+            InitializeComponent();
+            NavigationCacheMode = NavigationCacheMode.Enabled;
             _config = GoTrayConfiguration.TrayConfiguration;
             _config.ConfigChanged += ConfigurationChanged;
         }
 
+        private bool ShowProgress
+        {
+            set
+            {
+                DefaultViewModel["ShowProgress"] = value;
+                DefaultViewModel["ReloadProgress"] = false;
+                DefaultViewModel["LoadProgress"] = value;
+            }
+        }
+
+        private bool ShowReloadProgress
+        {
+            set
+            {
+                DefaultViewModel["ShowProgress"] = value;
+                DefaultViewModel["ReloadProgress"] = value;
+                DefaultViewModel["LoadProgress"] = false;
+            }
+        }
+
+        private IEnumerable<GoProject> Projects
+        {
+            get { return (IEnumerable<GoProject>) DefaultViewModel["Items"]; }
+            set { DefaultViewModel["Items"] = value; }
+        }
+
         /// <summary>
-        /// Populates the page with content passed during navigation.  Any saved state is also
-        /// provided when recreating a page from a prior session.
+        ///     Populates the page with content passed during navigation.  Any saved state is also
+        ///     provided when recreating a page from a prior session.
         /// </summary>
-        /// <param name="navigationParameter">The parameter value passed to
-        /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested.
+        /// <param name="navigationParameter">
+        ///     The parameter value passed to
+        ///     <see cref="Frame.Navigate(Type, Object)" /> when this page was initially requested.
         /// </param>
-        /// <param name="pageState">A dictionary of state preserved by this page during an earlier
-        /// session.  This will be null the first time a page is visited.</param>
+        /// <param name="pageState">
+        ///     A dictionary of state preserved by this page during an earlier
+        ///     session.  This will be null the first time a page is visited.
+        /// </param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
 #pragma warning disable 4014
@@ -73,10 +104,10 @@ namespace GoTray
             try
             {
                 InitProgress(reload);
-                GoTrayFeedSource feedDataSource = new GoTrayFeedSource(_config.GoServerUrl, _config.GoServerUserName,
-                                                                       _config.GoServerPassword);
+                var feedDataSource = new GoTrayFeedSource(_config.GoServerUrl, _config.GoServerUserName,
+                                                          _config.GoServerPassword);
                 IEnumerable<GoProject> projects = await feedDataSource.projects;
-                Projects = projects;
+                Projects = FilterUnpinnedPipelines(projects);
                 ResetProgress();
             }
             catch (Exception ex)
@@ -85,6 +116,11 @@ namespace GoTray
                 ResetProgress();
                 ShowException(ex);
             }
+        }
+
+        private IEnumerable<GoProject> FilterUnpinnedPipelines(IEnumerable<GoProject> projects)
+        {
+            return projects.Where(project => !_config.IsUnpinnedPipeline(project.PipelineName));
         }
 
         private void ResetProgress()
@@ -117,7 +153,7 @@ namespace GoTray
         private void ShowException(Exception ex)
         {
             ErrorGrid.DataContext = new GoTrayDashboardErrorContext()
-            .ShowError("Failed To Retieve Pipelines From Go Server", ex);
+                .ShowError("Failed To Retieve Pipelines From Go Server", ex);
         }
 
         private void ResetException()
@@ -125,35 +161,48 @@ namespace GoTray
             ErrorGrid.DataContext = new GoTrayDashboardErrorContext().RemoveError();
         }
 
-        private bool ShowProgress
+        private void PiplineClicked(object sender, ItemClickEventArgs e)
         {
-            set { 
-                DefaultViewModel["ShowProgress"]=value;
-                DefaultViewModel["ReloadProgress"] = false;
-                DefaultViewModel["LoadProgress"] = value;
-            }
+            Frame.Navigate(typeof (PipelineDetails), e.ClickedItem);
         }
 
-        private bool ShowReloadProgress
+        private void UnpinPipeline(object sender, RoutedEventArgs e)
         {
-            set
+            try
             {
-                DefaultViewModel["ShowProgress"] = value;
-                DefaultViewModel["ReloadProgress"] = value;
-                DefaultViewModel["LoadProgress"] = false;
+                IList<GoProject> projectsOnUI = new List<GoProject>(Projects);
+                IList<object> selectedItems = PipelinesGridView.SelectedItems;
+                foreach (object item in selectedItems)
+                {
+                    var project = item as GoProject;
+                    _config.UnpinPipeline(project.PipelineName);
+                    projectsOnUI.Remove(project);
+                }
+                Projects = projectsOnUI;
+            }
+            catch (Exception exception)
+            {
+                ToastUtil.ShowExceptionToast("Failed to unpin pipelines", exception);
             }
         }
 
-        private IEnumerable<GoProject> Projects
+
+        private void ResetPipelines(object sender, RoutedEventArgs e)
         {
-            set { DefaultViewModel["Items"] = value;
-            }
+            _config.RemoveUnpinnedPipelines();
+            ReloadPipelines(sender, e);
         }
 
-        private void PipelineTapped(object sender, TappedRoutedEventArgs e)
+        private void ReloadPipelines(object sender, RoutedEventArgs e)
         {
-            GoProject project = (GoProject) ((FrameworkElement) sender).DataContext;
-            Frame.Navigate(typeof (PipelineDetails), project);
+#pragma warning disable 4014
+            LoadPipelines(true);
+#pragma warning enable 4014
+        }
+
+        private void GoToGitHub(object sender, RoutedEventArgs e)
+        {
+            TrayUtil.GoToGitHub();
         }
     }
 }

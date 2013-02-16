@@ -51,6 +51,23 @@ namespace GoTrayFeed
         {
             Stages.AddRange(other.Stages);
         }
+
+        private bool Equals(GoProject other)
+        {
+            return string.Equals(_pipelineName, other._pipelineName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj is GoProject && Equals((GoProject) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return _pipelineName.GetHashCode();
+        }
     }
 
     public sealed class Stage

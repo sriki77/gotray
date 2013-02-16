@@ -14,8 +14,7 @@
         <local:PipelineDetailsModel x:Key="PipelineDetailsData" />
         <DataTemplate x:Key="StageGridItem">
             <TextBlock x:Name="StageGridItemText" Style="{StaticResource InActiveStageName}" 
-                       Text="{Binding StageName}" IsTextSelectionEnabled="False" TextTrimming="None" TextWrapping="NoWrap"
-                       Width="300"/>
+                       Text="{Binding StageName}" IsTextSelectionEnabled="False" Width="700"/>
         </DataTemplate>
     </Page.Resources>
 
@@ -56,9 +55,9 @@
                 </TextBlock>
                 <Grid Grid.Row="1" VerticalAlignment="Center" x:Name="StageGrid"  HorizontalAlignment="Center" Width="Auto">
                     <GridView ItemTemplate="{StaticResource StageGridItem}"
-                              SelectionMode="None"
+                              SelectionMode="Extended"
                               IsSwipeEnabled="false"
-                              x:Name="StageGridView" >
+                              x:Name="StageGridView" IsItemClickEnabled="False">
                     </GridView>
                     
                 </Grid>
@@ -114,4 +113,21 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
     </Grid>
+
+    <Page.BottomAppBar>
+        <AppBar x:Name="DashboardAppBar" Padding="10,0,10,0" AutomationProperties.Name="Dashboard App Bar">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50*"/>
+                    <ColumnDefinition Width="50*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel x:Name="LeftPanel" Orientation="Horizontal" Grid.Column="0" HorizontalAlignment="Left">
+                    <Button x:Name="Unpin" Style="{StaticResource UnPinAppBarButtonStyle}" Click="UnpinStage"/>
+                </StackPanel>
+                <StackPanel x:Name="RightPanel" Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+                    <Button x:Name="Help" Style="{StaticResource HelpAppBarButtonStyle}" Click="GoToGitHub"/>
+                </StackPanel>
+            </Grid>
+        </AppBar>
+    </Page.BottomAppBar>
 </common:LayoutAwarePage>

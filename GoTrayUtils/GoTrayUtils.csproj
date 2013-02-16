@@ -100,14 +100,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BooleanToVisibilityConverter.cs" />
+    <Compile Include="TrayUtil.cs" />
     <Compile Include="GoTrayConfiguration.cs" />
     <Compile Include="GoTrayConstants.cs" />
     <Compile Include="ToastUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="img\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>
