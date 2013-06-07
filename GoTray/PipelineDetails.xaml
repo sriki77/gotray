@@ -13,9 +13,46 @@
     <Page.Resources>
         <local:PipelineDetailsModel x:Key="PipelineDetailsData" />
         <DataTemplate x:Key="StageGridItem">
-            <TextBlock x:Name="StageGridItemText" Style="{StaticResource InActiveStageName}" 
-                       Text="{Binding StageName}" IsTextSelectionEnabled="False" Width="700"/>
+            <TextBlock x:Name="StageGridItemText" Style="{StaticResource InActiveStageName}"  Text="{Binding StageName}" IsTextSelectionEnabled="False"/>
         </DataTemplate>
+        <Storyboard x:Name="Building">
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(Border.Background).(GradientBrush.GradientStops)[11].(GradientStop.Offset)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.009"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(Border.Background).(GradientBrush.GradientStops)[6].(GradientStop.Offset)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.121"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(Border.Background).(GradientBrush.GradientStops)[10].(GradientStop.Offset)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.216"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(Border.Background).(GradientBrush.GradientStops)[8].(GradientStop.Offset)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.315"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(Border.Background).(GradientBrush.GradientStops)[1].(GradientStop.Offset)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.401"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(Border.Background).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.483"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(Border.Background).(GradientBrush.GradientStops)[3].(GradientStop.Offset)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.573"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(Border.Background).(GradientBrush.GradientStops)[9].(GradientStop.Offset)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.672"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(Border.Background).(GradientBrush.GradientStops)[4].(GradientStop.Offset)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.763"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(Border.Background).(GradientBrush.GradientStops)[2].(GradientStop.Offset)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.866"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(Border.Background).(GradientBrush.GradientStops)[5].(GradientStop.Offset)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.935"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(Border.Background).(GradientBrush.GradientStops)[7].(GradientStop.Offset)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Page.Resources>
 
     <Grid Style="{StaticResource LayoutRootStyle}">
@@ -39,43 +76,53 @@
               x:Name="PipelineDetailsGrid" Height="608" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <Grid.Background>
-                    <ImageBrush ImageSource="PipelineDetailBackground.png"></ImageBrush>
-                </Grid.Background>
+<!--                <Grid.Background>-->
+<!--                    <ImageBrush ImageSource="PipelineDetailBackground.png"></ImageBrush>-->
+<!--                </Grid.Background>-->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.3*" />
                     <RowDefinition Height="0.7*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" VerticalAlignment="Center" FontSize="80" HorizontalAlignment="Center"
-                           Text="{Binding PipelineName}">
-                </TextBlock>
-                <Grid Grid.Row="1" VerticalAlignment="Center" x:Name="StageGrid"  HorizontalAlignment="Center" Width="Auto">
-                    <GridView ItemTemplate="{StaticResource StageGridItem}"
-                              SelectionMode="Extended"
-                              IsSwipeEnabled="false"
-                              x:Name="StageGridView" IsItemClickEnabled="False">
-                    </GridView>
-                    
-                </Grid>
-                
+                <TextBlock Grid.Row="0" VerticalAlignment="Center" FontSize="120" HorizontalAlignment="Center" Text="{Binding PipelineName}"> </TextBlock>
+                <StackPanel Grid.Row="1" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock FontSize="70" Margin="0,0,20,0" Style="{StaticResource InActiveStageName}" Text="123"></TextBlock>
+                    <TextBlock FontSize="70" Margin="0,0,20,0" Style="{StaticResource InActiveStageName}" Text="123"></TextBlock>
+                    <TextBlock FontSize="70" Margin="0,0,20,0" Style="{StaticResource ActiveStageName}" Text="123"></TextBlock>
+                    <TextBlock FontSize="70" Style="{StaticResource InActiveStageName}" Text="123"></TextBlock>
+                </StackPanel>
+                <GridView Visibility="Collapsed" Grid.Row="1"  ItemTemplate="{StaticResource StageGridItem}" SelectionMode="Extended" IsSwipeEnabled="false" x:Name="StageGridView" IsItemClickEnabled="False"></GridView>
+               
             </Grid>
-            <Border Grid.Row="1" Background="Yellow"></Border>
-            <Grid Grid.Row="2" Background="Red">
+            <Border Grid.Row="2" Name="Loading">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                        <GradientStop Color="#FFFFB900" Offset="0.552"/>
+                        <GradientStop Color="#FFFFE5A1" Offset="0.448"/>
+                        <GradientStop Color="#FFFFB900" Offset="0.875"/>
+                        <GradientStop Color="#FFFFE5A1" Offset="0.629"/>
+                        <GradientStop Color="#FFFFE5A1" Offset="0.793"/>
+                        <GradientStop Color="#FFFFE5A1" Offset="0.953"/>
+                        <GradientStop Color="#FEFEB900" Offset="0.22"/>
+                        <GradientStop Color="#FFFFB900" Offset="0.026"/>
+                        <GradientStop Color="#FEFEB900" Offset="0.384"/>
+                        <GradientStop Color="#FEFEB900" Offset="0.711"/>
+                        <GradientStop Color="#FFFFE5A1" Offset="0.306"/>
+                        <GradientStop Color="#FFFFE5A1" Offset="0.129"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+            </Border>
+            <Grid Grid.Row="1" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+<!--                    <ColumnDefinition></ColumnDefinition>-->
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Last Build" FontSize="50" Margin="50,0,0,0" VerticalAlignment="Center"
-                           Foreground="White">
-                </TextBlock>
-                <TextBlock Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"
-                           Text="{Binding LastBuildTime}" FontSize="100" Margin="50,0,0,0" VerticalAlignment="Center"
-                           Foreground="White">
-                </TextBlock>
+<!--                <TextBlock Text="Last Build" FontSize="50" Margin="50,0,0,0" VerticalAlignment="Center" Foreground="White"></TextBlock>-->
+                <TextBlock HorizontalAlignment="Center" Text="{Binding LastBuildTime}" FontSize="50" Margin="50,0,0,0" VerticalAlignment="Center" Foreground="White"></TextBlock>
             </Grid>
         </Grid>
 
