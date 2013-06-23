@@ -7,13 +7,14 @@
     xmlns:local="using:GoTray"
     xmlns:common="using:GoTray.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Q42.WinRT.Controls"
     mc:Ignorable="d">
 
     <Page.Resources>
         <local:PipelineDetailsModel x:Key="PipelineDetailsData" />
         <DataTemplate x:Key="StageGridItem">
-            <TextBlock x:Name="StageGridItemText" Style="{StaticResource InActiveStageName}"  Text="{Binding StageName}" IsTextSelectionEnabled="False"/>
+            <TextBlock x:Name="StageGridItemText" Style="{StaticResource InActiveStageName}"  Text="{Binding StageName}" IsTextSelectionEnabled="False"
+                       TextWrapping="NoWrap" />
         </DataTemplate>
         <Storyboard x:Name="Building">
             <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(Border.Background).(GradientBrush.GradientStops)[11].(GradientStop.Offset)" Storyboard.TargetName="border">
@@ -53,6 +54,11 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Style x:Key="PipelineDetailsHeadingStyle" TargetType="TextBlock" 
+               BasedOn="{StaticResource BasicTextStyle}">
+            <Setter Property="FontSize" Value="120"/>
+            <Setter Property="Margin" Value="12,0,12,2"/>
+        </Style>
     </Page.Resources>
 
     <Grid Style="{StaticResource LayoutRootStyle}">
@@ -84,18 +90,40 @@
 <!--                    <ImageBrush ImageSource="PipelineDetailBackground.png"></ImageBrush>-->
 <!--                </Grid.Background>-->
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="0.3*" />
-                    <RowDefinition Height="0.7*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" VerticalAlignment="Center" FontSize="120" HorizontalAlignment="Center" Text="{Binding PipelineName}"> </TextBlock>
-                <StackPanel Grid.Row="1" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock FontSize="70" Margin="0,0,20,0" Style="{StaticResource InActiveStageName}" Text="123"></TextBlock>
-                    <TextBlock FontSize="70" Margin="0,0,20,0" Style="{StaticResource InActiveStageName}" Text="123"></TextBlock>
-                    <TextBlock FontSize="70" Margin="0,0,20,0" Style="{StaticResource ActiveStageName}" Text="123"></TextBlock>
-                    <TextBlock FontSize="70" Style="{StaticResource InActiveStageName}" Text="123"></TextBlock>
-                </StackPanel>
-                <GridView Visibility="Collapsed" Grid.Row="1"  ItemTemplate="{StaticResource StageGridItem}" SelectionMode="Extended" IsSwipeEnabled="false" x:Name="StageGridView" IsItemClickEnabled="False"></GridView>
-               
+                    <RowDefinition Height="0.4*" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions> 
+                <TextBlock  Grid.Row="0"  VerticalAlignment="Center" FontSize="120" HorizontalAlignment="Center" 
+                           TextAlignment="Center" TextWrapping="Wrap"
+                           TextTrimming="WordEllipsis" Text="{Binding PipelineName}" IsTextSelectionEnabled="False"
+                           Margin="12,0,12,2"/>
+<!--                <StackPanel Grid.Row="1" VerticalAlignment="Center"-->
+<!--                            Orientation="Horizontal" HorizontalAlignment="Center"/>-->
+                <ListView x:Name="StagesPanel" Grid.Row="1" VerticalAlignment="Center"
+                          HorizontalAlignment="Center" ItemsSource="{Binding Stages}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="70" Margin="0,0,20,0" Style="{StaticResource InActiveStageName}" 
+                                       Text="{Binding StageName}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapGrid Orientation="Horizontal" HorizontalChildrenAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>    
+                
+<!--                <StackPanel x:Name="StagesStackPanel" Grid.Row="1" VerticalAlignment="Center"-->
+<!--                          Orientation="Horizontal" HorizontalAlignment="Center">-->
+<!--                    <controls:WrapPanel x:Name="StagesPanel"-->
+<!--                            Orientation="Horizontal" HorizontalAlignment="Center" -->
+<!--                                    VerticalAlignment="Center" MaxWidth="{Binding ActualWidth, ElementName=StagesStackPanel}"/>-->
+<!--                </StackPanel>-->
+                    
+                    
             </Grid>
             <Border Grid.Row="2" Name="Loading">
                 <Border.Background>
@@ -119,9 +147,7 @@
             <Grid Grid.Row="1" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
-<!--                    <ColumnDefinition></ColumnDefinition>-->
                 </Grid.ColumnDefinitions>
-<!--                <TextBlock Text="Last Build" FontSize="50" Margin="50,0,0,0" VerticalAlignment="Center" Foreground="White"></TextBlock>-->
                 <TextBlock HorizontalAlignment="Center" Text="{Binding LastBuildTime}" FontSize="50" Margin="50,0,0,0" VerticalAlignment="Center" Foreground="White"></TextBlock>
             </Grid>
         </Grid>

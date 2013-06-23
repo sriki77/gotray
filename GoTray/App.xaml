@@ -24,7 +24,7 @@
                 <Setter Property="FontWeight" Value="Light"></Setter>
                 <Setter Property="Opacity" Value="0.8"></Setter>
                 <Setter Property="Foreground" Value="SlateGray"></Setter>
-
+                <Setter Property="TextWrapping" Value="NoWrap"></Setter>
             </Style>
 
             <Style TargetType="TextBlock" x:Name="ActiveStageName" >

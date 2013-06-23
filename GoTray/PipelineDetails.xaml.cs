@@ -77,20 +77,41 @@ namespace GoTray
             var project = e.Parameter as GoProject;
             _pipelineDetailsModel = new PipelineDetailsModel(project);
             PipelineDetailsGrid.DataContext = _pipelineDetailsModel;
-            StageGridView.ItemsSource = _pipelineDetailsModel.Stages;
-            
+            //StageGridView.ItemsSource = _pipelineDetailsModel.Stages;
+            PopulateStages();
+
         }
 
+        private void PopulateStages()
+        {
+ //           StagesPanel.ItemsSource = _pipelineDetailsModel.Stages;
+//            foreach (var stage in _pipelineDetailsModel.Stages)
+//            {
+//                TextBlock stageTextBlock=new TextBlock
+//                    {
+//                        FontSize = 70,
+//                        Margin = new Thickness(0, 0, 20, 0),
+//                        Text = stage.StageName
+//                    };
+//                StagesPanel.Items.Add(stageTextBlock);
+//            } 
+
+        }
+
+//         <TextBlock FontSize="70" Margin="0,0,20,0" Style="{StaticResource InActiveStageName}" Text="123"></TextBlock>
+//                    <TextBlock FontSize="70" Margin="0,0,20,0" Style="{StaticResource InActiveStageName}" Text="123"></TextBlock>
+//                    <TextBlock FontSize="70" Margin="0,0,20,0" Style="{StaticResource ActiveStageName}" Text="123"></TextBlock>
+//                    <TextBlock FontSize="70" Style="{StaticResource InActiveStageName}" Text="123"></TextBlock>
         private void UnpinStage(object sender, RoutedEventArgs e)
         {
-            IList<object> selectedItems = StageGridView.SelectedItems;
-            IList<StageDetailsModel> stages = new List<StageDetailsModel>(_pipelineDetailsModel.Stages);
-            foreach (var item in selectedItems)
-            {
-                StageDetailsModel stage = item as StageDetailsModel;
-                stages.Remove(stage);
-            }
-            StageGridView.ItemsSource = stages;
+//            IList<object> selectedItems = StageGridView.SelectedItems;
+//            IList<StageDetailsModel> stages = new List<StageDetailsModel>(_pipelineDetailsModel.Stages);
+//            foreach (var item in selectedItems)
+//            {
+//                StageDetailsModel stage = item as StageDetailsModel;
+//                stages.Remove(stage);
+//            }
+//            StageGridView.ItemsSource = stages;
         }
 
         private void GoToGitHub(object sender, RoutedEventArgs e)
