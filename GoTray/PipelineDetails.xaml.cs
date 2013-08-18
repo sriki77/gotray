@@ -1,12 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using GoTray.Common;
+﻿using GoTray.Common;
 using GoTrayFeed;
 using GoTrayUtils;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 
 namespace GoTray
@@ -38,81 +33,43 @@ namespace GoTray
     {
         public PipelineDetailsModel()
         {
-            
         }
 
         internal PipelineDetailsModel(GoProject project)
         {
             PipelineName = project.PipelineName;
-            LastBuildTime = project.LastBuildTime;
-            Stages=new StageDetailsModel[project.Stages.Count];
-            for (int i = 0; i < Stages.Length; ++i)
+            Status = project.Status;
+            StageStatuses = new GoProject.ProjectStatus[project.Stages.Count];
+            for (int i = 0; i < StageStatuses.Length; ++i)
             {
-                Stages[i] = new StageDetailsModel
-                    {
-                        StageName = project.Stages[i].Name,
-                        StageActive = project.Stages[i].Active,
-                    };
+                GoProject.ProjectStatus status = project.Stages[i].DetermineStageStatus();
+                StageStatuses[i] = status;
+                if (status == GoProject.ProjectStatus.Building) break;
             }
         }
 
         public string PipelineName { get; private set; }
-        public StageDetailsModel[] Stages { get; private set; }
-        public string LastBuildTime { get; private set; }
-
+        public GoProject.ProjectStatus[] StageStatuses { get; private set; }
+        public GoProject.ProjectStatus Status { get; private set; }
     }
 
     public sealed partial class PipelineDetails : LayoutAwarePage
     {
-        private PipelineDetailsModel _pipelineDetailsModel;
-
         public PipelineDetails()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
+
+        public PipelineDetailsModel PipelineDetailsStatus { get; private set; }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             var project = e.Parameter as GoProject;
-            _pipelineDetailsModel = new PipelineDetailsModel(project);
-            PipelineDetailsGrid.DataContext = _pipelineDetailsModel;
-            //StageGridView.ItemsSource = _pipelineDetailsModel.Stages;
-            PopulateStages();
-
+            PipelineDetailsStatus = new PipelineDetailsModel(project);
+            DataContext = PipelineDetailsStatus;
         }
 
-        private void PopulateStages()
-        {
- //           StagesPanel.ItemsSource = _pipelineDetailsModel.Stages;
-//            foreach (var stage in _pipelineDetailsModel.Stages)
-//            {
-//                TextBlock stageTextBlock=new TextBlock
-//                    {
-//                        FontSize = 70,
-//                        Margin = new Thickness(0, 0, 20, 0),
-//                        Text = stage.StageName
-//                    };
-//                StagesPanel.Items.Add(stageTextBlock);
-//            } 
-
-        }
-
-//         <TextBlock FontSize="70" Margin="0,0,20,0" Style="{StaticResource InActiveStageName}" Text="123"></TextBlock>
-//                    <TextBlock FontSize="70" Margin="0,0,20,0" Style="{StaticResource InActiveStageName}" Text="123"></TextBlock>
-//                    <TextBlock FontSize="70" Margin="0,0,20,0" Style="{StaticResource ActiveStageName}" Text="123"></TextBlock>
-//                    <TextBlock FontSize="70" Style="{StaticResource InActiveStageName}" Text="123"></TextBlock>
-        private void UnpinStage(object sender, RoutedEventArgs e)
-        {
-//            IList<object> selectedItems = StageGridView.SelectedItems;
-//            IList<StageDetailsModel> stages = new List<StageDetailsModel>(_pipelineDetailsModel.Stages);
-//            foreach (var item in selectedItems)
-//            {
-//                StageDetailsModel stage = item as StageDetailsModel;
-//                stages.Remove(stage);
-//            }
-//            StageGridView.ItemsSource = stages;
-        }
 
         private void GoToGitHub(object sender, RoutedEventArgs e)
         {

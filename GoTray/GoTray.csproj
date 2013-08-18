@@ -126,11 +126,10 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="GoTray_TemporaryKey.pfx" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\LoadFeed.png" />
     <Content Include="Assets\Logo.png" />
+    <Content Include="Assets\slate.jpg" />
     <Content Include="PipelineDetailBackground.png" />
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.png" />
@@ -170,17 +169,6 @@
       <Project>{abbe1904-0cc9-4cd9-81c5-4cebf1083b97}</Project>
       <Name>GoTrayUtils</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\netcore45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Q42.WinRT">
-      <HintPath>..\packages\Q42.WinRT.1.0.11.42\lib\win\Q42.WinRT.dll</HintPath>
-    </Reference>
-    <Reference Include="Q42.WinRT.Portable">
-      <HintPath>..\packages\Q42.WinRT.Portable.1.0.11.42\lib\portable-win+net45+wp80\Q42.WinRT.Portable.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

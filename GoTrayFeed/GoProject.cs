@@ -6,20 +6,25 @@ namespace GoTrayFeed
     public sealed class GoProject
     {
         //<Project name="sadf :: defaultStage" activity="Building" lastBuildStatus="Success" lastBuildLabel="1" lastBuildTime="2012-11-15T14:58:58" webUrl="http://localhost:8153/go/pipelines/sadf/1/defaultStage/1"/>
-        public List<Stage> Stages= new List<Stage>();
-        private string _pipelineName;
         public enum ProjectStatus
         {
-            Building,Success,Failure
-
+            None,
+            Building,
+            Success,
+            Failure
         }
+
+        public List<Stage> Stages = new List<Stage>();
+        private string _pipelineName;
 
         public string PipelineName
         {
             get { return _pipelineName; }
             set
             {
-                PipelineFullName=value; _pipelineName = value.Split(':')[0]; }
+                PipelineFullName = value;
+                _pipelineName = value.Split(':')[0];
+            }
         }
 
         internal string PipelineFullName { get; private set; }
@@ -27,7 +32,12 @@ namespace GoTrayFeed
         public ProjectStatus Status
         {
             get { return DetermineProjectStatus(); }
-            private set { throw new System.NotImplementedException(); }
+            private set { throw new NotImplementedException(); }
+        }
+
+        public string LastBuildTime
+        {
+            get { return Stages[Stages.Count - 1].LastBuildTime; }
         }
 
         private ProjectStatus DetermineProjectStatus()
@@ -38,13 +48,7 @@ namespace GoTrayFeed
                 return ProjectStatus.Building;
             }
 
-            return (ProjectStatus) Enum.Parse(typeof (ProjectStatus), Stages[Stages.Count - 1].LastBuildStatus,true);
-
-        }
-
-        public string LastBuildTime
-        {
-            get { return Stages[Stages.Count-1].LastBuildTime; }
+            return (ProjectStatus) Enum.Parse(typeof (ProjectStatus), Stages[Stages.Count - 1].LastBuildStatus, true);
         }
 
         public void Merge(GoProject other)
@@ -73,17 +77,35 @@ namespace GoTrayFeed
     public sealed class Stage
     {
         private string _stageName;
-        public string Name {
+        private string _stageStatus;
+
+        public string Name
+        {
             get { return _stageName; }
             set { _stageName = value.Split(':')[2].Trim(); }
         }
+
         public string Activity { get; set; }
+
         public string LastBuildStatus { get; set; }
+        public GoProject.ProjectStatus StageStatus { get; private set; }
         public string LastBuildLabel { get; set; }
         public string LastBuildTime { get; set; }
         public string WebUrl { get; set; }
-        public bool Active {
+
+        public bool Active
+        {
             get { return "Building".Equals(Activity); }
+        }
+
+        public GoProject.ProjectStatus DetermineStageStatus()
+        {
+            if (Active)
+            {
+                return GoProject.ProjectStatus.Building;
+            }
+           
+            return (GoProject.ProjectStatus)Enum.Parse(typeof(GoProject.ProjectStatus), LastBuildStatus, true);
         }
     }
 }
