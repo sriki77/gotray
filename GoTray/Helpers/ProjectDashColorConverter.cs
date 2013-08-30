@@ -13,13 +13,13 @@ namespace GoTray.Helpers
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            switch ((GoProject.ProjectStatus) value)
+            switch ((ProjectStatus) value)
             {
-                case GoProject.ProjectStatus.Building:
+                case ProjectStatus.Building:
                     return InProgressColor;
-                case GoProject.ProjectStatus.Failure:
+                case ProjectStatus.Failure:
                     return FailureColor;
-                case GoProject.ProjectStatus.Success:
+                case ProjectStatus.Success:
                     return PassColor;
             }
             return GrayColor;

@@ -103,19 +103,16 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PipelineDetails.xaml.cs">
+    <Compile Include="Common\SuspensionManager.cs" />
+    <Compile Include="Screens\GoTrayDashboardErrorContext.cs" />
+    <Compile Include="Screens\PipelineDetails.xaml.cs">
       <DependentUpon>PipelineDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Common\BindableBase.cs" />
-    <Compile Include="Common\BooleanNegationConverter.cs" />
-    <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\LayoutAwarePage.cs" />
-    <Compile Include="Common\RichTextColumns.cs" />
-    <Compile Include="Common\SuspensionManager.cs" />
-    <Compile Include="GoTrayDashboard.xaml.cs">
+    <Compile Include="Screens\GoTrayDashboard.xaml.cs">
       <DependentUpon>GoTrayDashboard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GoTraySettings.xaml.cs">
+    <Compile Include="Screens\GoTraySettings.xaml.cs">
       <DependentUpon>GoTraySettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ProjectDashColorConverter.cs" />
@@ -129,21 +126,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Logo.png" />
-    <Content Include="Assets\slate.jpg" />
-    <Content Include="PipelineDetailBackground.png" />
+    <Content Include="Assets\BackSlate.jpg" />
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\widerLogo.png" />
-    <Content Include="BackGround.png" />
-    <Content Include="Common\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="PipelineDetails.xaml">
+    <Page Include="Screens\PipelineDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -151,11 +145,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="GoTrayDashboard.xaml">
+    <Page Include="Screens\GoTrayDashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GoTraySettings.xaml">
+    <Page Include="Screens\GoTraySettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -170,6 +164,7 @@
       <Name>GoTrayUtils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>

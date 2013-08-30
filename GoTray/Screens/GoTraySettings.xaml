@@ -129,7 +129,7 @@
                 <StackPanel Orientation="Horizontal" Grid.Column="0" Margin="40, 32, 17, 13">
                     <Button Margin="5,3,0,0"  Style="{StaticResource SettingsBackButtonStyle}" Click="SettingsBackClicked"/>
                     <TextBlock Margin="10,0,0,0" FontFamily="Segoe UI" FontWeight="SemiLight" FontSize="24.6667" Text="Defaults" Foreground="White"/>
-                    <Image Source="Assets/SmallLogo.png" Margin="400,0,6,0"/>
+                    <Image Source="../Assets/SmallLogo.png" Margin="400,0,6,0"/>
                 </StackPanel>
             </Grid>
 
