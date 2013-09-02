@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace GoTrayFeed
 {
@@ -13,9 +14,8 @@ namespace GoTrayFeed
         }
 
         public string Activity { get; set; }
-
         public string LastBuildStatus { get; set; }
-        public ProjectStatus StageStatus { get; private set; }
+        public Status Status { get; private set; }
         public string LastBuildLabel { get; set; }
         public string LastBuildTime { get; set; }
         public string WebUrl { get; set; }
@@ -26,25 +26,32 @@ namespace GoTrayFeed
         }
 
 
-        public ProjectStatus DetermineStageStatusRelativeTo(Stage stage)
+        public void DetermineStatusRelativeTo(Stage stage)
         {
-
             if (stage != null)
             {
-                string curLabel = StripReRunCount(LastBuildLabel);
-                string prevLabel = StripReRunCount(stage.LastBuildLabel);
-                if (!prevLabel.Equals(curLabel) || stage.Active)
+                string curCounter = PipelineCounter(Name, WebUrl);
+                string prevCounter = PipelineCounter(stage.Name, stage.WebUrl);
+                if (!prevCounter.Equals(curCounter) || stage.Active)
                 {
-                    return ProjectStatus.None;
+                    Status = Status.None;
+                    return;
                 }
             }
-            return (ProjectStatus) Enum.Parse(typeof (ProjectStatus), LastBuildStatus, true);
+            if (Active)
+            {
+                Status = Status.Building;
+                return;
+            }
+
+            Status = (Status) Enum.Parse(typeof (Status), LastBuildStatus, true);
         }
 
-        private string StripReRunCount(string lastBuildLabel)
+        private string PipelineCounter(string name, string webUrl)
         {
-            var splits = lastBuildLabel.Split(new[]{"::"}, StringSplitOptions.RemoveEmptyEntries);
-            return splits[0].Trim();
+            Match match = Regex.Match(webUrl, String.Format(@"/(\d+)/{0}/", name),
+                                      RegexOptions.IgnoreCase);
+            return match.Groups[1].Value;
         }
     }
 }

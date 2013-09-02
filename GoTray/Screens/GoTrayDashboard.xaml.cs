@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GoTray.Common;
 using GoTrayFeed;
 using GoTrayUtils;
-using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -15,7 +13,7 @@ namespace GoTray
 {
     public sealed partial class GoTrayDashboard : LayoutAwarePage
     {
-        readonly GoTrayConfiguration _config;
+        private readonly GoTrayConfiguration _config;
 
         public GoTrayDashboard()
         {
@@ -45,9 +43,9 @@ namespace GoTray
             }
         }
 
-        private IEnumerable<GoProject> Projects
+        private IEnumerable<Pipeline> Projects
         {
-            get { return (IEnumerable<GoProject>) DefaultViewModel["Items"]; }
+            get { return (IEnumerable<Pipeline>) DefaultViewModel["Items"]; }
             set { DefaultViewModel["Items"] = value; }
         }
 
@@ -65,13 +63,13 @@ namespace GoTray
                 InitProgress(reload);
                 var feedDataSource = new GoTrayFeedSource(_config.GoServerUrl, _config.GoServerUserName,
                                                           _config.GoServerPassword);
-                IEnumerable<GoProject> projects = await feedDataSource.projects;
+                IEnumerable<Pipeline> projects = await feedDataSource.projects;
                 Projects = FilterUnpinnedPipelines(projects);
                 ResetProgress();
             }
             catch (Exception ex)
             {
-                Projects = Enumerable.Empty<GoProject>();
+                Projects = Enumerable.Empty<Pipeline>();
                 ResetProgress();
                 ShowException(ex);
             }
@@ -84,18 +82,18 @@ namespace GoTray
             {
                 var feedDataSource = new GoTrayFeedSource(_config.GoServerUrl, _config.GoServerUserName,
                                                           _config.GoServerPassword);
-                IEnumerable<GoProject> projects = await feedDataSource.projects;
+                IEnumerable<Pipeline> projects = await feedDataSource.projects;
                 Projects = FilterUnpinnedPipelines(projects);
             }
             catch (Exception ex)
             {
-                Projects = Enumerable.Empty<GoProject>();
+                Projects = Enumerable.Empty<Pipeline>();
                 ShowException(ex);
             }
-            DefaultViewModel["LastUpdatedTime"] = "Last Updated: "+DateTime.Now.ToString("HH:mm:ss tt");
+            DefaultViewModel["LastUpdatedTime"] = "Last Updated: " + DateTime.Now.ToString("HH:mm:ss tt");
         }
 
-        private IEnumerable<GoProject> FilterUnpinnedPipelines(IEnumerable<GoProject> projects)
+        private IEnumerable<Pipeline> FilterUnpinnedPipelines(IEnumerable<Pipeline> projects)
         {
             return projects.Where(project => !_config.IsUnpinnedPipeline(project.PipelineName));
         }
@@ -120,7 +118,7 @@ namespace GoTray
 
         private void ConfigurationChanged(object sender, EventArgs e)
         {
-            Projects = Enumerable.Empty<GoProject>();
+            Projects = Enumerable.Empty<Pipeline>();
             ResetException();
 #pragma warning disable 4014
             LoadPipelines(true);
@@ -148,11 +146,11 @@ namespace GoTray
             DashboardAppBar.IsOpen = false;
             try
             {
-                IList<GoProject> projectsOnUI = new List<GoProject>(Projects);
+                IList<Pipeline> projectsOnUI = new List<Pipeline>(Projects);
                 IList<object> selectedItems = PipelinesGridView.SelectedItems;
                 foreach (object item in selectedItems)
                 {
-                    var project = item as GoProject;
+                    var project = item as Pipeline;
                     _config.UnpinPipeline(project.PipelineName);
                     projectsOnUI.Remove(project);
                 }
@@ -170,7 +168,6 @@ namespace GoTray
             DashboardAppBar.IsOpen = false;
             _config.RemoveUnpinnedPipelines();
             ReloadPipelines(sender, e);
-
         }
 
         private void ReloadPipelines(object sender, RoutedEventArgs e)

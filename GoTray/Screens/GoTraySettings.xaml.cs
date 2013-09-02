@@ -1,7 +1,5 @@
-﻿using System;
-using GoTray.Common;
+﻿using GoTray.Common;
 using GoTrayUtils;
-using Windows.Storage;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -13,17 +11,35 @@ namespace GoTray
 {
     public sealed partial class GoTraySettings : LayoutAwarePage
     {
+        private readonly GoTrayConfiguration _config;
+        private string _password = "";
         private string _url = "";
         private string _username = "";
-        private string _password = "";
-        private readonly GoTrayConfiguration _config;
 
         public GoTraySettings()
         {
             InitializeComponent();
-            this.Loaded += SettingsLoaded;
-            this.Unloaded += SettingsClosed;
+            Loaded += SettingsLoaded;
+            Unloaded += SettingsClosed;
             _config = GoTrayConfiguration.TrayConfiguration;
+        }
+
+        private string GoServerPassword
+        {
+            get { return (string) DefaultViewModel["GoServerPassword"]; }
+            set { DefaultViewModel["GoServerPassword"] = value; }
+        }
+
+        private string GoServerUserName
+        {
+            get { return (string) DefaultViewModel["GoServerUserName"]; }
+            set { DefaultViewModel["GoServerUserName"] = value; }
+        }
+
+        private string GoServerUrl
+        {
+            get { return (string) DefaultViewModel["GoServerUrl"]; }
+            set { DefaultViewModel["GoServerUrl"] = value; }
         }
 
         private void SettingsLoaded(object sender, RoutedEventArgs e)
@@ -39,7 +55,6 @@ namespace GoTray
             _url = _config.GoServerUrl;
             _username = _config.GoServerUserName;
             _password = _config.GoServerPassword;
-
         }
 
         private void SettingsClosed(object sender, object e)
@@ -60,28 +75,10 @@ namespace GoTray
                    !_password.Equals(GoServerPassword);
         }
 
-        private string GoServerPassword
-        {
-            get { return (string)DefaultViewModel["GoServerPassword"]; }
-            set { DefaultViewModel["GoServerPassword"] = value; }
-        }
-
-        private string GoServerUserName
-        {
-            get { return (string)DefaultViewModel["GoServerUserName"]; }
-            set { DefaultViewModel["GoServerUserName"] = value; }
-        }
-
-        private string GoServerUrl
-        {
-            get { return (string) DefaultViewModel["GoServerUrl"]; }
-            set { DefaultViewModel["GoServerUrl"]=value; }
-        }
-
 
         private void SettingsBackClicked(object sender, RoutedEventArgs e)
         {
-            Popup parent = this.Parent as Popup;
+            var parent = Parent as Popup;
             if (parent != null)
             {
                 parent.IsOpen = false;

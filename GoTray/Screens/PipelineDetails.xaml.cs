@@ -10,7 +10,7 @@ namespace GoTray
     public sealed class StageDetailsModel
     {
         public string StageName { get; internal set; }
-        public bool StageActive { get; internal set; }
+        public Status Status { get; internal set; }
 
         private bool Equals(StageDetailsModel other)
         {
@@ -36,25 +36,24 @@ namespace GoTray
         {
         }
 
-        internal PipelineDetailsModel(GoProject project)
+        internal PipelineDetailsModel(Pipeline pipeline)
         {
-            PipelineName = project.PipelineName;
-            Status = project.Status;
-            StageStatuses = new ProjectStatus[project.Stages.Count];
-            Stage previous = null;
-            for (int i = 0; i < StageStatuses.Length; ++i)
+            PipelineName = pipeline.PipelineName;
+            Status = pipeline.Status;
+            StageDetails = new StageDetailsModel[pipeline.Stages.Count];
+            for (int i = 0; i < StageDetails.Length; ++i)
             {
-                Stage curStage = project.Stages[i];
-                ProjectStatus status = curStage.DetermineStageStatusRelativeTo(previous);
-                if (status == ProjectStatus.None) break;
-                StageStatuses[i] = status;
-                previous = curStage;
+                StageDetails[i] = new StageDetailsModel
+                    {
+                        Status = pipeline.Stages[i].Status,
+                        StageName = pipeline.Stages[i].Name
+                    };
             }
         }
 
         public string PipelineName { get; private set; }
-        public ProjectStatus[] StageStatuses { get; private set; }
-        public ProjectStatus Status { get; private set; }
+        public StageDetailsModel[] StageDetails { get; private set; }
+        public Status Status { get; private set; }
     }
 
     public sealed partial class PipelineDetails : LayoutAwarePage
@@ -68,17 +67,17 @@ namespace GoTray
             _config.ConfigChanged += ConfigurationChanged;
         }
 
+        public PipelineDetailsModel PipelineDetailsStatus { get; private set; }
+
         private void ConfigurationChanged(object sender, EventArgs e)
         {
-            GoBack(this,null);
+            GoBack(this, null);
         }
-
-        public PipelineDetailsModel PipelineDetailsStatus { get; private set; }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            var project = e.Parameter as GoProject;
+            var project = e.Parameter as Pipeline;
             PipelineDetailsStatus = new PipelineDetailsModel(project);
             DataContext = PipelineDetailsStatus;
         }

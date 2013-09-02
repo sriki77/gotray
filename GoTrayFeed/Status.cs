@@ -1,6 +1,6 @@
 ﻿namespace GoTrayFeed
 {
-    public enum ProjectStatus
+    public enum Status
     {
         None,
         Building,

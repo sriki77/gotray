@@ -6,20 +6,20 @@ namespace GoTray.Helpers
 {
     public class ProjectDashColorConverter : IValueConverter
     {
-        private const String FailureColor = "#5d0104"; 
+        private const String FailureColor = "#5d0104";
         private const String PassColor = "#035b06";
         private const String InProgressColor = "#8b7703";
-        private const String GrayColor = "LightGray"; 
+        private const String GrayColor = "LightGray";
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            switch ((ProjectStatus) value)
+            switch ((Status) value)
             {
-                case ProjectStatus.Building:
+                case Status.Building:
                     return InProgressColor;
-                case ProjectStatus.Failure:
+                case Status.Failure:
                     return FailureColor;
-                case ProjectStatus.Success:
+                case Status.Success:
                     return PassColor;
             }
             return GrayColor;

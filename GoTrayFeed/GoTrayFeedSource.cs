@@ -5,78 +5,91 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Windows.UI;
 
 namespace GoTrayFeed
 {
     public sealed class GoTrayFeedSource
     {
-        public readonly Task<IEnumerable<GoProject>> projects;
+        public readonly Task<IEnumerable<Pipeline>> projects;
 
         public GoTrayFeedSource(string serverUrl, string userName, string password) : this()
         {
             if (String.IsNullOrEmpty(serverUrl)) return;
-            projects = PopulateProjectsAsync(serverUrl, userName??"", password??"");
+            projects = PopulateProjectsAsync(serverUrl, userName ?? "", password ?? "");
         }
 
         private GoTrayFeedSource()
         {
-            TaskCompletionSource<IEnumerable<GoProject>> completionSource =
-                new TaskCompletionSource<IEnumerable<GoProject>>();
-            completionSource.SetResult(Enumerable.Empty<GoProject>());
+            var completionSource =
+                new TaskCompletionSource<IEnumerable<Pipeline>>();
+            completionSource.SetResult(Enumerable.Empty<Pipeline>());
             projects = completionSource.Task;
         }
 
-        private async Task<IEnumerable<GoProject>> PopulateProjectsAsync(string serverUrl, string userName, string password)
+        private async Task<IEnumerable<Pipeline>> PopulateProjectsAsync(string serverUrl, string userName,
+                                                                        string password)
         {
             ICredentials cred = new NetworkCredential(userName, password);
             String responseXml = await RetrieveCcTrayResponseAsync(serverUrl, cred);
             XDocument cctrayXml = XDocument.Parse(responseXml);
-            IEnumerable<GoProject> goProjects = (from lv1 in cctrayXml.Descendants("Project")
-                                                 select new GoProject
-                                                     {
-                                                         PipelineName = lv1.Attribute("name").Value,
-                                                         Stages= new []{
-                                                             new Stage
-                                                                 {
-                                                                     Name=lv1.Attribute("name").Value,
-                                                                     Activity = lv1.Attribute("activity").Value,
-                                                                     LastBuildLabel = lv1.Attribute("lastBuildLabel").Value,
-                                                                     LastBuildStatus = lv1.Attribute("lastBuildStatus").Value,
-                                                                     LastBuildTime = lv1.Attribute("lastBuildTime").Value,
-                                                                     WebUrl = lv1.Attribute("webUrl").Value
-                                                                 }}.ToList()
-                                                     });
+            IEnumerable<Pipeline> goProjects = (from lv1 in cctrayXml.Descendants("Project")
+                                                select new Pipeline
+                                                    {
+                                                        PipelineName = lv1.Attribute("name").Value,
+                                                        Stages = new[]
+                                                            {
+                                                                new Stage
+                                                                    {
+                                                                        Name = lv1.Attribute("name").Value,
+                                                                        Activity = lv1.Attribute("activity").Value,
+                                                                        LastBuildLabel =
+                                                                            lv1.Attribute("lastBuildLabel").Value,
+                                                                        LastBuildStatus =
+                                                                            lv1.Attribute("lastBuildStatus").Value,
+                                                                        LastBuildTime =
+                                                                            lv1.Attribute("lastBuildTime").Value,
+                                                                        WebUrl = lv1.Attribute("webUrl").Value
+                                                                    }
+                                                            }.ToList()
+                                                    });
             return Sanitize(goProjects);
         }
 
-        private IEnumerable<GoProject> Sanitize(IEnumerable<GoProject> goProjects)
+        private IEnumerable<Pipeline> Sanitize(IEnumerable<Pipeline> goPipelines)
         {
-            List<GoProject> projects=new List<GoProject>();
-            foreach (var project in goProjects)
+            var pipelines = new List<Pipeline>();
+            foreach (Pipeline pipeline in goPipelines)
             {
-                if (IsJob(project)) continue;
-                GoProject projectToFind = project;
-                GoProject foundProject = projects.Find((p) => p.PipelineName.Equals(projectToFind.PipelineName));
-                if (foundProject != null)
+                if (IsJob(pipeline)) continue;
+                Pipeline projectToFind = pipeline;
+                Pipeline foundPipeline = pipelines.Find((p) => p.PipelineName.Equals(projectToFind.PipelineName));
+                if (foundPipeline != null)
                 {
-                    foundProject.Merge(projectToFind);
+                    foundPipeline.Merge(projectToFind);
                 }
                 else
                 {
-                    projects.Add(project);
+                    pipelines.Add(pipeline);
                 }
-
             }
-            return projects;
+
+            return CalculatePipelineStatuses(pipelines);
         }
 
-       
-
-        private bool IsJob(GoProject project)
+        private IEnumerable<Pipeline> CalculatePipelineStatuses(List<Pipeline> pipelines)
         {
-            return project.PipelineFullName.IndexOf("::", System.StringComparison.Ordinal) !=
-                project.PipelineFullName.LastIndexOf("::", System.StringComparison.Ordinal);
+            foreach (Pipeline pipeline in pipelines)
+            {
+                pipeline.DetermineStatus();
+            }
+            return pipelines;
+        }
+
+
+        private bool IsJob(Pipeline pipeline)
+        {
+            return pipeline.PipelineFullName.IndexOf("::", StringComparison.Ordinal) !=
+                   pipeline.PipelineFullName.LastIndexOf("::", StringComparison.Ordinal);
         }
 
         private async Task<string> RetrieveCcTrayResponseAsync(string serverUrl, ICredentials credential)

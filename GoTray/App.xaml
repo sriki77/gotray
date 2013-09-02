@@ -7,22 +7,23 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Common/StandardStyles.xaml"/>
+                <ResourceDictionary Source="Common/StandardStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <x:String x:Key="AppName">Go Tray</x:String>
             <x:String x:Key="DashboardHeading">Go Pipelines</x:String>
             <x:String x:Key="PipelinesDetailsHeading">Go Pipeline Status</x:String>
             <ImageSource x:Key="BackgroundImage">/Assets/BackSlate.jpg</ImageSource>
-            <goTrayUtils:BooleanToVisibilityConverter x:Key="BoolToVisiConv" TrueValue="Visible" FalseValue="Collapsed"/>
-            <goTrayUtils:BooleanToVisibilityConverter x:Key="InvBoolToVisiConv" TrueValue="Collapsed" FalseValue="Visible"/>
-            <helpers:ProjectDashColorConverter x:Key="ProjectDashColorConv"/>
-            
+            <goTrayUtils:BooleanToVisibilityConverter x:Key="BoolToVisiConv" TrueValue="Visible" FalseValue="Collapsed" />
+            <goTrayUtils:BooleanToVisibilityConverter x:Key="InvBoolToVisiConv" TrueValue="Collapsed"
+                                                      FalseValue="Visible" />
+            <helpers:ProjectDashColorConverter x:Key="ProjectDashColorConv" />
+
             <Style TargetType="TextBlock">
                 <Setter Property="FontWeight" Value="Light"></Setter>
             </Style>
 
         </ResourceDictionary>
     </Application.Resources>
-    
-    
+
+
 </Application>

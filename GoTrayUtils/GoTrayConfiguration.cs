@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace GoTrayUtils
@@ -9,8 +7,8 @@ namespace GoTrayUtils
     public sealed class GoTrayConfiguration
     {
         public static readonly GoTrayConfiguration TrayConfiguration = new GoTrayConfiguration();
-        private readonly ApplicationDataContainer _roamingSettings;
         private readonly ApplicationDataContainer _localSettings;
+        private readonly ApplicationDataContainer _roamingSettings;
 
         private GoTrayConfiguration()
         {
@@ -69,6 +67,5 @@ namespace GoTrayUtils
         {
             UnpinnedPipelines = new List<string>();
         }
-
     }
 }

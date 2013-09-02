@@ -6,14 +6,14 @@ namespace GoTrayUtils
 {
     public static class ToastUtil
     {
-        public static ToastNotification ShowExceptionToast(String msg,Exception ex)
+        public static ToastNotification ShowExceptionToast(String msg, Exception ex)
         {
-            ToastTemplateType toastType = ToastTemplateType.ToastText02;
+            var toastType = ToastTemplateType.ToastText02;
             XmlDocument toastXML = ToastNotificationManager.GetTemplateContent(toastType);
             XmlNodeList toastText = toastXML.GetElementsByTagName("text");
             toastText[0].InnerText = msg;
             toastText[1].InnerText = ex.Message;
-            ToastNotification toast = new ToastNotification(toastXML);
+            var toast = new ToastNotification(toastXML);
             ToastNotificationManager.CreateToastNotifier().Show(toast);
             return toast;
         }

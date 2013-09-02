@@ -13,11 +13,11 @@
     <Page.Resources>
         <CollectionViewSource
             x:Name="StageStatusItemSource"
-            Source="{Binding StageStatuses}" />
+            Source="{Binding StageDetails}" />
         <DataTemplate x:Key="StageStatuItemTemplate">
             <Rectangle Width="50" Height="50" Stroke="White" StrokeThickness="3"
-                       Fill="{Binding Converter={StaticResource ProjectDashColorConv}}" 
-                       ToolTipService.ToolTip="{Binding}" />
+                       Fill="{Binding Status, Converter={StaticResource ProjectDashColorConv}}"
+                       ToolTipService.ToolTip="{Binding StageName}" />
         </DataTemplate>
     </Page.Resources>
 
