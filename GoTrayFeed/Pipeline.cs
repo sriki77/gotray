@@ -18,7 +18,7 @@ namespace GoTrayFeed
             set
             {
                 PipelineFullName = value;
-                _pipelineName = value.Split(':')[0];
+                _pipelineName = value.Split(':')[0].Trim();
             }
         }
 
@@ -74,6 +74,14 @@ namespace GoTrayFeed
         public override int GetHashCode()
         {
             return _pipelineName.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return
+                string.Format(
+                    "LastBuildTime: {0}, Status: {1}, PipelineFullName: {2}, PipelineName: {3}, PipelineName: {4}, Stages: {5}",
+                    LastBuildTime, Status, PipelineFullName, PipelineName, _pipelineName, Stages.Count);
         }
     }
 }

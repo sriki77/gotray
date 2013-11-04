@@ -15,7 +15,7 @@ namespace GoTrayFeed
 
         public string Activity { get; set; }
         public string LastBuildStatus { get; set; }
-        public Status Status { get; private set; }
+        public Status Status { get; internal set; }
         public string LastBuildLabel { get; set; }
         public string LastBuildTime { get; set; }
         public string WebUrl { get; set; }
@@ -52,6 +52,15 @@ namespace GoTrayFeed
             Match match = Regex.Match(webUrl, String.Format(@"/(\d+)/{0}/", name),
                                       RegexOptions.IgnoreCase);
             return match.Groups[1].Value;
+        }
+
+        public override string ToString()
+        {
+            return
+                string.Format(
+                    "StageName: {0}, Name: {1}, Activity: {2}, LastBuildStatus: {3}, " +
+                    "Status: {4}, LastBuildLabel: {5}, LastBuildTime: {6}, WebUrl: {7}, Active: {8}",
+                    _stageName, Name, Activity, LastBuildStatus, Status, LastBuildLabel, LastBuildTime, WebUrl, Active);
         }
     }
 }
