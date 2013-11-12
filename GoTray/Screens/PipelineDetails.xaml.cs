@@ -49,11 +49,13 @@ namespace GoTray
                         StageName = pipeline.Stages[i].Name
                     };
             }
+            LastUpdatedTime = "Last Updated: " + DateTime.Now.ToString("HH:mm:ss tt");
         }
 
         public string PipelineName { get; private set; }
         public StageDetailsModel[] StageDetails { get; private set; }
         public Status Status { get; private set; }
+        public string LastUpdatedTime { get; private set; }
     }
 
     public sealed partial class PipelineDetails : LayoutAwarePage
@@ -77,15 +79,8 @@ namespace GoTray
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            var project = e.Parameter as Pipeline;
-            PipelineDetailsStatus = new PipelineDetailsModel(project);
+            PipelineDetailsStatus = new PipelineDetailsModel(e.Parameter as Pipeline);
             DataContext = PipelineDetailsStatus;
-        }
-
-
-        private void GoToGitHub(object sender, RoutedEventArgs e)
-        {
-            TrayUtil.GoToGitHub();
         }
     }
 }

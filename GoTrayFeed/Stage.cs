@@ -19,6 +19,7 @@ namespace GoTrayFeed
         public string LastBuildLabel { get; set; }
         public string LastBuildTime { get; set; }
         public string WebUrl { get; set; }
+        internal string CurCounter;
 
         public bool Active
         {
@@ -26,13 +27,12 @@ namespace GoTrayFeed
         }
 
 
-        public void DetermineStatusRelativeTo(Stage stage)
+        public void DetermineStatusRelativeTo(string curRun)
         {
-            if (stage != null)
+            PopulatePipelineCounter(Name, WebUrl);
+            if (curRun != null)
             {
-                string curCounter = PipelineCounter(Name, WebUrl);
-                string prevCounter = PipelineCounter(stage.Name, stage.WebUrl);
-                if (!prevCounter.Equals(curCounter) || stage.Active)
+                if (!CurCounter.Equals(curRun))
                 {
                     Status = Status.None;
                     return;
@@ -47,11 +47,11 @@ namespace GoTrayFeed
             Status = (Status) Enum.Parse(typeof (Status), LastBuildStatus, true);
         }
 
-        private string PipelineCounter(string name, string webUrl)
+        private void PopulatePipelineCounter(string name, string webUrl)
         {
             Match match = Regex.Match(webUrl, String.Format(@"/(\d+)/{0}/", name),
                                       RegexOptions.IgnoreCase);
-            return match.Groups[1].Value;
+            CurCounter=match.Groups[1].Value;
         }
 
         public override string ToString()

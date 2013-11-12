@@ -46,11 +46,11 @@ namespace GoTrayFeed
 
         private void DetermineStageStatuses()
         {
-            Stage prev = null;
+            string curRun = null;
             foreach (Stage stage in Stages)
             {
-                stage.DetermineStatusRelativeTo(prev);
-                prev = stage;
+                stage.DetermineStatusRelativeTo(curRun);
+                curRun = curRun ?? stage.CurCounter;
             }
         }
 

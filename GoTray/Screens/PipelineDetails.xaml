@@ -39,12 +39,16 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button x:Name="BackButton" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}"
                     Style="{StaticResource BackButtonStyle}" Grid.Column="0" />
             <TextBlock x:Name="PageTitle" Grid.Column="1" Text="{StaticResource PipelinesDetailsHeading}"
                        Style="{StaticResource PageHeaderTextStyle}" />
+            <TextBlock x:Name="LastUpdatedTime" Grid.Column="2" Text="{Binding LastUpdatedTime}"
+                       IsHitTestVisible="false" Style="{StaticResource PageSubheaderTextStyle}"
+                       HorizontalAlignment="Right"/>
         </Grid>
 
         <Grid Grid.Row="1" Margin="34,0,10,0">

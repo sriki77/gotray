@@ -32,8 +32,8 @@
 
         <DataTemplate x:Key="DefaultGridItemTemplate">
             <Grid HorizontalAlignment="Left" Height="100" Width="350"
-                  Background="{Binding Status, Converter={StaticResource ProjectDashColorConv}}">
-                <TextBlock Text="{Binding PipelineName}" FontSize="35" Grid.Row="0" VerticalAlignment="Center"
+                  Background="{Binding Status, Converter={StaticResource ProjectDashColorConv}}" >
+                <TextBlock Text="{Binding PipelineName}" FontSize="35"  VerticalAlignment="Center"
                            Style="{StaticResource GridTitleTextStyle}" FontWeight="Light" />
             </Grid>
         </DataTemplate>
@@ -50,21 +50,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Horizontal scrolling grid used in most view states -->
-        <GridView
-            x:Name="PipelinesGridView"
-            AutomationProperties.AutomationId="ItemsGridView"
-            AutomationProperties.Name="Items"
-            TabIndex="1"
-            Grid.RowSpan="2"
-            Padding="116,136,116,46"
-            ItemsSource="{Binding Source={StaticResource ItemsViewSource}}"
-            ItemTemplate="{StaticResource DefaultGridItemTemplate}"
-            SelectionMode="Extended"
-            IsSwipeEnabled="false"
-            HorizontalAlignment="Left" IsItemClickEnabled="True" ItemClick="PiplineClicked" />
-        <!-- Back button and page title -->
-        <Grid>
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -78,6 +64,31 @@
                        IsHitTestVisible="false" Style="{StaticResource PageSubheaderTextStyle}"
                        HorizontalAlignment="Right" />
         </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text=""
+                       IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}" />
+            <GridView
+            x:Name="PipelinesGridView"
+            AutomationProperties.AutomationId="ItemsGridView"
+            AutomationProperties.Name="Items"
+            TabIndex="1"
+            Grid.Column="1"
+            ItemsSource="{Binding Source={StaticResource ItemsViewSource}}"
+            ItemTemplate="{StaticResource DefaultGridItemTemplate}"
+            SelectionMode="Extended"
+            IsSwipeEnabled="false"
+            HorizontalAlignment="Left" IsItemClickEnabled="True" ItemClick="PiplineClicked"/>
+
+        </Grid>
+
+           
+        
+        
 
         <Grid x:Name="ErrorGrid" DataContext="{StaticResource DashErrorContext}" HorizontalAlignment="Center"
               VerticalAlignment="Center" Grid.Row="1"

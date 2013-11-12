@@ -10,12 +10,12 @@ namespace GoTrayFeed
 {
     public sealed class GoTrayFeedSource
     {
-        public readonly Task<IEnumerable<Pipeline>> projects;
+        public readonly Task<IEnumerable<Pipeline>> pipelines;
 
         public GoTrayFeedSource(string serverUrl, string userName, string password) : this()
         {
             if (String.IsNullOrEmpty(serverUrl)) return;
-            projects = PopulateProjectsAsync(serverUrl, userName ?? "", password ?? "");
+            pipelines = PopulatePipelinesAsync(serverUrl, userName ?? "", password ?? "");
         }
 
         private GoTrayFeedSource()
@@ -23,16 +23,16 @@ namespace GoTrayFeed
             var completionSource =
                 new TaskCompletionSource<IEnumerable<Pipeline>>();
             completionSource.SetResult(Enumerable.Empty<Pipeline>());
-            projects = completionSource.Task;
+            pipelines = completionSource.Task;
         }
 
-        private async Task<IEnumerable<Pipeline>> PopulateProjectsAsync(string serverUrl, string userName,
+        private async Task<IEnumerable<Pipeline>> PopulatePipelinesAsync(string serverUrl, string userName,
                                                                         string password)
         {
             ICredentials cred = new NetworkCredential(userName, password);
             String responseXml = await RetrieveCcTrayResponseAsync(serverUrl, cred);
             XDocument cctrayXml = XDocument.Parse(responseXml);
-            IEnumerable<Pipeline> goProjects = (from lv1 in cctrayXml.Descendants("Project")
+            IEnumerable<Pipeline> goPipelines = (from lv1 in cctrayXml.Descendants("Project")
                                                 select new Pipeline
                                                     {
                                                         PipelineName = lv1.Attribute("name").Value,
@@ -52,7 +52,7 @@ namespace GoTrayFeed
                                                                     }
                                                             }.ToList()
                                                     });
-            return Sanitize(goProjects);
+            return Sanitize(goPipelines);
         }
 
         private IEnumerable<Pipeline> Sanitize(IEnumerable<Pipeline> goPipelines)
@@ -61,11 +61,11 @@ namespace GoTrayFeed
             foreach (Pipeline pipeline in goPipelines)
             {
                 if (IsJob(pipeline)) continue;
-                Pipeline projectToFind = pipeline;
-                Pipeline foundPipeline = pipelines.Find((p) => p.PipelineName.Equals(projectToFind.PipelineName));
+                Pipeline pipelineToFind = pipeline;
+                Pipeline foundPipeline = pipelines.Find((p) => p.PipelineName.Equals(pipelineToFind.PipelineName));
                 if (foundPipeline != null)
                 {
-                    foundPipeline.Merge(projectToFind);
+                    foundPipeline.Merge(pipelineToFind);
                 }
                 else
                 {

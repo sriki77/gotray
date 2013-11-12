@@ -14,6 +14,7 @@ namespace GoTray
     public sealed partial class GoTrayDashboard : LayoutAwarePage
     {
         private readonly GoTrayConfiguration _config;
+        private readonly DispatcherTimer _refreshTimer = new DispatcherTimer();
 
         public GoTrayDashboard()
         {
@@ -63,8 +64,8 @@ namespace GoTray
                 InitProgress(reload);
                 var feedDataSource = new GoTrayFeedSource(_config.GoServerUrl, _config.GoServerUserName,
                                                           _config.GoServerPassword);
-                IEnumerable<Pipeline> projects = await feedDataSource.projects;
-                Projects = FilterUnpinnedPipelines(projects);
+                IEnumerable<Pipeline> pipelines = await feedDataSource.pipelines;
+                Projects = FilterUnpinnedPipelines(pipelines);
                 ResetProgress();
             }
             catch (Exception ex)
@@ -74,15 +75,23 @@ namespace GoTray
                 ShowException(ex);
             }
             DefaultViewModel["LastUpdatedTime"] = "Last Updated: " + DateTime.Now.ToString("HH:mm:ss tt");
+            StartAutoRefresh();
         }
 
-        private async Task SilentRefresh()
+        private void StartAutoRefresh()
+        {
+            _refreshTimer.Interval = new TimeSpan(0, 0, 30);
+            _refreshTimer.Tick += (sender, o) => SilentRefresh();
+            _refreshTimer.Start();
+        }
+
+        private async void SilentRefresh()
         {
             try
             {
                 var feedDataSource = new GoTrayFeedSource(_config.GoServerUrl, _config.GoServerUserName,
                                                           _config.GoServerPassword);
-                IEnumerable<Pipeline> projects = await feedDataSource.projects;
+                IEnumerable<Pipeline> projects = await feedDataSource.pipelines;
                 Projects = FilterUnpinnedPipelines(projects);
             }
             catch (Exception ex)
@@ -138,9 +147,11 @@ namespace GoTray
 
         private void PiplineClicked(object sender, ItemClickEventArgs e)
         {
-            Frame.Navigate(typeof (PipelineDetails), e.ClickedItem);
+            //Frame.Navigate(typeof (PipelineDetails),e.ClickedItem);
+            //Frame.Navigating +=delegate(object o, NavigatingCancelEventArgs args) {  };   
         }
 
+        
         private void UnpinPipeline(object sender, RoutedEventArgs e)
         {
             DashboardAppBar.IsOpen = false;
