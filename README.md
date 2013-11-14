@@ -6,4 +6,4 @@ A Windows 8 application to serve as build radiator for [Thoughworks Go](http://w
 In addition, since the application works of CCTray feed, it can be used with any build system that can generate a CCTray Feed.
 
 Snapshot of the dashboard is shown below.
-(screenshot.png)
+![Dashboard Screenshot](https://raw.github.com/sriki77/gotray/master/screenshot.png)
