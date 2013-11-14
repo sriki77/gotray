@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="4b87744b-ae21-4cfe-8996-92a341b80b52" Publisher="CN=godev" Version="1.0.0.0" />
+  <Identity Name="4b87744b-ae21-4cfe-8996-92a341b80b52" Publisher="CN=godev" Version="1.0.0.4" />
   <Properties>
     <DisplayName>GoTray</DisplayName>
     <PublisherDisplayName>Srikanth (Developer) &amp; Maulik (UX)</PublisherDisplayName>
@@ -16,7 +16,7 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="GoTray.App">
       <VisualElements DisplayName="GoTray" Logo="Assets\logo.png" SmallLogo="Assets\smallLogo.png" Description="Go Dashboard Built Using CCTray Feed From Go." ForegroundText="light" BackgroundColor="#464646" ToastCapable="true">
-        <DefaultTile ShowName="allLogos" WideLogo="Assets\widerLogo.png" />
+        <DefaultTile ShowName="allLogos" WideLogo="Assets\widerLogo.png" ShortName="Go Tray" />
         <SplashScreen Image="Assets\splashScreen.png" />
       </VisualElements>
     </Application>

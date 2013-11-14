@@ -5,16 +5,17 @@ using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using GoTrayFeed;
 using HtmlAgilityPack;
 using NUnit.Framework;
 
-namespace GoTrayFeed
+namespace GoTrayFeedTest
 {
     [TestFixture]
-    internal class GoTrayFeedIntegrationTest
+    public sealed class GoTrayFeedIntegrationTest
     {
-        private const string Username = "";
-        private const string Password = "";
+        private const string Username = "sseshad";
+        private const string Password = "w999999=W!";
         private const string ServerPrefix = "http://go02.thoughtworks.com:8153/go/";
         private const string CctrayUrl = ServerPrefix+"cctray.xml";
         private const string DashboardUrl = ServerPrefix + "home";

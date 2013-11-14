@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-
+[assembly: InternalsVisibleTo("GoTrayFeedTest")]
 namespace GoTrayFeed
 {
     public sealed class Stage
